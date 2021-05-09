@@ -1,5 +1,5 @@
 import pygame
-# Hola
+
 pygame.init()
 
 #tocar musica inicial
