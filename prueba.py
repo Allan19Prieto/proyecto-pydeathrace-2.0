@@ -1,5 +1,7 @@
 import pygame
 
+#Allan Añadio en este momento
+
 pygame.init()
 
 #tocar musica inicial
