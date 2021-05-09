@@ -1,5 +1,5 @@
 import pygame
-# Holaa que hace
+
 class pydeathrace:
     def __init__(self):
         self._init_pygame()
