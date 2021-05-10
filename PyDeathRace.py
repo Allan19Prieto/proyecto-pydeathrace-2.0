@@ -45,6 +45,7 @@ class pydeathrace:
     def _init_pygame(self):
         pygame.init()
         pygame.display.set_caption("Space Rocks")
+        #pygame.draw.rect(self.pantalla, green, [150, 50, 400, 400], 0)
 
     def _handle_input(self):
         for event in pygame.event.get():
@@ -52,6 +53,11 @@ class pydeathrace:
                     event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 quit()
+                #Para el evento del ratón al darle colick
+               # if event.type == pygame.MOUSEBUTTONUP:
+               #     if event.button != 1:
+                #        continue
+                #press = True
 
     def _process_game_logic(self):
         pass
@@ -64,6 +70,16 @@ class pydeathrace:
 
         #Así se dibuja un rectangulo
         #self.rectangulo = pygame.draw.rect(self.pantalla, (255,255,255), [160, 50, 160, 40])
-
-
+        alto= 800
+        ancho = 1500
+        x= 200
+        y= 150
+        #dependiendo del numero final se le quita el fondo (0) y solo bordes (1)
+        pygame.draw.rect(self.pantalla, green, [x, y, ancho, alto], 0)
+        pygame.draw.rect(self.pantalla, white, [860, 630, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [500, 375, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [860, 375, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [1220, 375, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [500, 630, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [1220, 630, 200, 100], 0)
         pygame.display.flip()

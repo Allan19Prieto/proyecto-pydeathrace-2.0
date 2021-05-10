@@ -6,7 +6,7 @@ import pygame
 #Crea un ruta a un imagen, que esté en assets/sprites
 def load_sprite(name, with_alpha=True):
     #arquivo = os.path.join('img', arquivo)
-    path = f"C:/Users/Allan/Desktop/Proyecto_Race/img/{name}.jpg"
+    path = f"C:/Users/joset/PycharmProjects/proyecto-pydeathrace-2.0/img/{name}.jpg"
     #Carga la imagen usando load
     loaded_sprite = load(path)
 
