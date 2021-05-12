@@ -3,6 +3,7 @@ from funciones import load_sprite
 import pygame
 import ctypes
 import os
+import tkinter
 
 red = (255, 0, 0)
 green = (0, 255, 0)
@@ -20,8 +21,8 @@ class pydeathrace:
         #Nos permite obtener el tamaño de la pantalla completa
         user32 = ctypes.windll.user32
         user32.SetProcessDPIAware()
-        ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-        self.pantalla = pygame.display.set_mode((ancho,alto))
+        self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+        self.pantalla = pygame.display.set_mode((self.ancho-5,self.alto-52))
 
         #Añadimos el fondo de pantalla
         self.background = load_sprite("main", False)
@@ -70,16 +71,16 @@ class pydeathrace:
 
         #Así se dibuja un rectangulo
         #self.rectangulo = pygame.draw.rect(self.pantalla, (255,255,255), [160, 50, 160, 40])
-        alto= 800
-        ancho = 1500
-        x= 200
-        y= 150
+        #alto= 800
+        #ancho = 1500
+        x= 0
+        y= 0
         #dependiendo del numero final se le quita el fondo (0) y solo bordes (1)
-        pygame.draw.rect(self.pantalla, green, [x, y, ancho, alto], 0)
-        pygame.draw.rect(self.pantalla, white, [860, 630, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [500, 375, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [860, 375, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [1220, 375, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [500, 630, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [1220, 630, 200, 100], 0)
+        #pygame.draw.rect(self.pantalla, green, [x, y, self.ancho, self.alto], 0)
+        pygame.draw.rect(self.pantalla, white, [660, 430, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [300, 175, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [660, 175, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [1020, 175, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [300, 430, 200, 100], 0)
+        pygame.draw.rect(self.pantalla, white, [1020, 430, 200, 100], 0)
         pygame.display.flip()
