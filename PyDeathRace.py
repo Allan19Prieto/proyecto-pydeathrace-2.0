@@ -1,6 +1,6 @@
 from Clases import *
 from funciones import load_sprite
-from pruebas import mouse
+from Clases import Mouse
 import pygame
 import ctypes
 import os
@@ -15,6 +15,8 @@ purple = (255, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
 
+
+
 class pydeathrace:
     def __init__(self):
         self._init_pygame()
@@ -24,6 +26,7 @@ class pydeathrace:
         user32.SetProcessDPIAware()
         self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
         self.pantalla = pygame.display.set_mode((self.ancho-5,self.alto-52))
+        self.window_rect = self.pantalla.get_rect()
 
         #Añadimos el fondo de pantalla
         self.background = load_sprite("main", False)
@@ -32,11 +35,16 @@ class pydeathrace:
         pygame.display.set_caption("PyDeathRace 2.0")
         pygame.display.set_icon(pygame.image.load(os.path.join("img/icon.png")))
 
+        self.mouse1 = Mouse(self.pantalla)
+        #self.mouse1.altera_cursor()
+
+        # Fondo de pantalla
+        self.main_background = Image("main.jpg", (self.ancho, self.alto),self.pantalla,self.window_rect)
+
 
         # tocar musica inicial
         #pygame.mixer.music.load("sounds/menu.wav")
         #pygame.mixer.music.play(-1)
-
 
     def main_loop(self):
         while True:
@@ -70,21 +78,10 @@ class pydeathrace:
         #Con esta linea podemos ver la imagen
         #El anterior  era de (450,200)
         self.pantalla.blit(self.background, (50, 100))
+        self.main_background.place()
+        #Colocamos en mouse en la pantalla
+        self.mouse1.altera_cursor()
 
-        #Así se dibuja un rectangulo
-        #self.rectangulo = pygame.draw.rect(self.pantalla, (255,255,255), [160, 50, 160, 40])
-        #alto= 800
-        #ancho = 1500
-        x= 0
-        y= 0
-        #dependiendo del numero final se le quita el fondo (0) y solo bordes (1)
-        #pygame.draw.rect(self.pantalla, green, [x, y, self.ancho, self.alto], 0)
-        pygame.draw.rect(self.pantalla, white, [660, 430, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [300, 175, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [660, 175, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [1020, 175, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [300, 430, 200, 100], 0)
-        pygame.draw.rect(self.pantalla, white, [1020, 430, 200, 100], 0)
-        mouse1 = mouse ()
-        mouse1.altera_cursor()
+        # update screen
+        pygame.display.update()
         pygame.display.flip()
