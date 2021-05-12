@@ -1,5 +1,6 @@
 from Clases import *
 from funciones import load_sprite
+from pruebas import mouse
 import pygame
 import ctypes
 import os
@@ -67,7 +68,8 @@ class pydeathrace:
         self.pantalla.fill(black)
 
         #Con esta linea podemos ver la imagen
-        self.pantalla.blit(self.background, (450, 200))
+        #El anterior  era de (450,200)
+        self.pantalla.blit(self.background, (50, 100))
 
         #Así se dibuja un rectangulo
         #self.rectangulo = pygame.draw.rect(self.pantalla, (255,255,255), [160, 50, 160, 40])
@@ -83,4 +85,6 @@ class pydeathrace:
         pygame.draw.rect(self.pantalla, white, [1020, 175, 200, 100], 0)
         pygame.draw.rect(self.pantalla, white, [300, 430, 200, 100], 0)
         pygame.draw.rect(self.pantalla, white, [1020, 430, 200, 100], 0)
+        mouse1 = mouse ()
+        mouse1.altera_cursor()
         pygame.display.flip()

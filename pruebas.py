@@ -19,7 +19,7 @@ ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 pantalla = pygame.display.set_mode((ancho-30,alto-55))
 window_rect = pantalla.get_rect()
 
-pygame.display.set_caption("PyDeatgRace")
+pygame.display.set_caption("Example")
 
 fps = pygame.time.Clock()
 
@@ -88,7 +88,7 @@ class Image:
 
 
 #Fondo de pantalla
-main_background = Image("Fondo.png", (ancho, alto))
+main_background = Image("main.jpg", (ancho, alto))
 
 mouse = Mouse()
 # game loop
