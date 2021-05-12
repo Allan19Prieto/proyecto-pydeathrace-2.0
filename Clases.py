@@ -2,19 +2,16 @@
 import pygame
 import funciones
 import os
-from pygame.locals import *
 
+from pygame.locals import *
 
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 pygame.init()
-
 # sonidos para el click
 sound_volume = 2
 click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
 click1.set_volume(sound_volume)
-
-even = pygame.event.get()
 
 #class botton (pygame.sprite.Sprite):
         #def (self, imagen1, imagen2, x=200, y=200):
@@ -34,10 +31,10 @@ even = pygame.event.get()
 
 #La clase para controlar el mouase y el cursoss
 class Mouse():
-
-    def __init__(self, pantalla ):
+    def __init__(self, pantalla ,event):
         """ Constructor """
         self.pantalla = pantalla
+        self.event = event
         pygame.mouse.set_visible(0)
         self.imgens_cursor = funciones.cargar_imagem('cursor.png', 1, [(0, y, 40, 43) \
                                                                       for y in [0, 43]])
@@ -45,7 +42,7 @@ class Mouse():
         """ Cambia la imagen cuando hago click """
         cursor = self.imgens_cursor[0]
 
-        if pygame.mouse.get_pressed() == MOUSEBUTTONDOWN:
+        if self.event.type == MOUSEBUTTONDOWN:
             #Se usa la imagen que esta en la posicion 1 del arreglo
             cursor = self.imgens_cursor[1]
             #Par aque suene al hacer Click
@@ -87,4 +84,3 @@ class Image():
             self.rect.y = xy[1]
 
         self.pantalla.blit(self.image, self.rect)
-
