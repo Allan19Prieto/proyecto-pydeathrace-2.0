@@ -17,6 +17,7 @@ user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
 ancho, alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 pantalla = pygame.display.set_mode((ancho-30,alto-55))
+window_rect = pantalla.get_rect()
 
 pygame.display.set_caption("PyDeatgRace")
 
@@ -41,7 +42,6 @@ class Mouse():
         pygame.mouse.set_visible(0)
         self.imgens_cursor = funciones.cargar_imagem('cursor.png', 1, [(0, y, 40, 43) \
                                                                       for y in [0, 43]])
-
     def imagem_cursor(self):
         """ Cambia la imagen cuando hago click """
         cursor = self.imgens_cursor[0]
@@ -68,7 +68,27 @@ class Mouse():
         """ Muestra la imagen del mouse en estado normal """
         pantalla.blit(self.imagem_cursor(), self.coordenadas_ponteiro())
 
+class Image:
+    def __init__(self, name: str, wh: tuple):
+        self.image = pygame.image.load(os.path.join("img", name))
+        self.image = pygame.transform.scale(self.image, wh)
+        self.rect = self.image.get_rect()
+        self.brightness = 0
 
+    def place(self, center: bool = False, xy: tuple = (0, 0)):
+        if center:
+            self.rect.center = window_rect.center
+            self.rect.x += xy[0]
+            self.rect.y += xy[1]
+        else:
+            self.rect.x = xy[0]
+            self.rect.y = xy[1]
+
+        pantalla.blit(self.image, self.rect)
+
+
+#Fondo de pantalla
+main_background = Image("Fondo.png", (ancho, alto))
 
 mouse = Mouse()
 # game loop
@@ -83,8 +103,7 @@ while True:
 
     fps.tick(60)
     pantalla.fill(black)
-
-
+    main_background.place()
 
 
     # mouse
