@@ -53,7 +53,7 @@ class Mouse():
 
 #Clase para que la imagen se vea del tamaño de la pantalla
 class Image():
-    def __init__(self, name: str, wh: tuple,pantalla, ventana):
+    def __init__(self, name: str, wh: tuple, pantalla, ventana):
         self.image = pygame.image.load(os.path.join("img", name))
         self.image = pygame.transform.scale(self.image, wh)
         self.rect = self.image.get_rect()
@@ -71,3 +71,30 @@ class Image():
             self.rect.y = xy[1]
 
         self.pantalla.blit(self.image, self.rect)
+
+class Text():
+    def __init__(self, pantalla, ventana, font: str, size: int, color: tuple, text: str, background: tuple = None):
+        self.pantalla = pantalla
+        self.ventana = ventana
+        self.size = size
+        self.font = pygame.font.Font(os.path.join("fonts", f"{font}.ttf"), self.size)
+        self.color = color
+        self.text = text
+        self.background = background
+        self.image = self.font.render(self.text, False, self.color, self.background)
+        self.rect = self.image.get_rect()
+
+    def place(self, center: bool = False, xy: tuple = (0, 0)):
+        if center:
+            self.rect.center = self.ventana.center
+            self.rect.x += xy[0]
+            self.rect.y += xy[1]
+        else:
+            self.rect.x = xy[0]
+            self.rect.y = xy[1]
+
+        self.pantalla.blit(self.image, self.rect)
+
+    def render(self):
+        self.image = self.font.render(self.text, True, self.color, self.background)
+        self.rect = self.image.get_rect()

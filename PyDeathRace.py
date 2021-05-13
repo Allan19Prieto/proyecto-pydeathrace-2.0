@@ -34,9 +34,8 @@ class pydeathrace:
         # Fondo de pantalla que se colocara
         self.imagen_inicio = self.fondo_inicio
 
-        self.imagen1 = pygame.image.load("button/play.png")
-        self.imagen2 = pygame.image.load("button/Red Box Button.png")
-        self.btn1 = Boton(self.imagen1, self.imagen2)
+        self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
+
 
         # tocar musica inicial
         pygame.mixer.music.load("sounds/Battlefield.mp3")
@@ -84,11 +83,15 @@ class pydeathrace:
         #Con esta linea podemos ver la imagen de fondo
         self.imagen_inicio.place()
 
-        #Colocamos en mouse en la pantalla
-        self.mouse1.altera_cursor()
-        print(self.ancho,self.alto)
 
-        #self.btn1.update(self.pantalla,self.si)
+
+        self.title_text.place(True, (25, -300))
+
+
+
+        # Colocamos en mouse en la pantalla
+        self.mouse1.altera_cursor()
+        print(self.ancho, self.alto)
 
         # update screen
         pygame.display.update()
