@@ -114,8 +114,6 @@ class pydeathrace:
             self.menu_musica.play()
 
 
-
-
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
         print(self.mouse_pos[0], self.mouse_pos[1])
