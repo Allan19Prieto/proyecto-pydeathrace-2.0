@@ -1,6 +1,6 @@
 
 from Clases import *
-
+from funciones import muestra_texto
 import pygame
 import ctypes
 import os
@@ -14,6 +14,10 @@ celeste = (0, 255, 255)
 purple = (255, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
+# Parametros del puntaje
+consolas = pygame.font.match_font("consolas")
+puntuacion = 0
+red = (255, 0, 0)
 
 class pydeathrace:
     def __init__(self):
@@ -36,6 +40,8 @@ class pydeathrace:
 
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
 
+        self.puntaje = muestra_texto(self.pantalla,consolas,str (puntuacion),red, 40, 700,50)
+
 
         # tocar musica inicial
         pygame.mixer.music.load("sounds/Battlefield.mp3")
@@ -54,13 +60,14 @@ class pydeathrace:
         pygame.mixer.init()
         pygame.init()
 
+
         #Nombre y icono
         pygame.display.set_caption("PyDeathRace 2.0")
         pygame.display.set_icon(pygame.image.load(os.path.join("img/icon.png")))
 
+
     # Para manejar las entradas
     def _handle_input(self):
-
         for self.event in pygame.event.get():
             if self.event.type == pygame.QUIT or (
                     self.event.type == pygame.KEYDOWN and self.event.key == pygame.K_ESCAPE
@@ -87,11 +94,12 @@ class pydeathrace:
 
         self.title_text.place(True, (25, -300))
 
-
+        self.puntaje
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
         print(self.ancho, self.alto)
+
 
         # update screen
         pygame.display.update()

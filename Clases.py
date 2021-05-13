@@ -14,7 +14,7 @@ sound_volume = 2
 click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
 click1.set_volume(sound_volume)
 
-#La clase para controlar el mouase y el cursoss
+#La clase para controlar el mouse y el cursor
 class Mouse():
     def __init__(self, pantalla, event):
         """ Constructor """
@@ -41,7 +41,7 @@ class Mouse():
 
 
     def coordenadas_ponteiro(self):
-        """ Exatablece las cordenadas del puntero del mouse"""
+        """ Establece las cordenadas del puntero del mouse"""
 
         x, y = self.coordenadas_cursor()
         x -= self.imagem_cursor().get_width() - 5
