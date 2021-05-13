@@ -28,18 +28,32 @@ class pydeathrace:
         self.pantalla = pygame.display.set_mode((self.ancho , self.alto ))
         self.window_rect = self.pantalla.get_rect()
 
-        # Vaviables para los fondos de pantalla
-        self.fondo_inicio = Image("Fondo.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        # Para que el juego se ejecute siempre en unas FPS establecidas
+        self.clock = pygame.time.Clock()
+
+        #Variable para el menu
+        self.menu = "inicio"
+
+        # Fondos de pantalla
+        self.fondo_inicio = Image("img", "main.jpg", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        self.fondo_menu = Image("img", "Fondo2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+
+        # Sound
+        self.menu_musica = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
+        self.click2_sound = pygame.mixer.Sound(os.path.join("sounds", "click2.wav"))
+
+        # Pantalla Inicio
+        self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
+        self.play_button = Image("button", "play.png", (200, 85), self.pantalla, self.window_rect)
+        self.about_button = Image("button", "about.png", (200, 85), self.pantalla, self.window_rect)
+
 
         # Fondo de pantalla que se colocara
-        self.imagen_inicio = self.fondo_inicio
-
-        self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
-
+        #self.imagen_inicio = self.fondo_inicio
 
         # tocar musica inicial
-        pygame.mixer.music.load("sounds/Battlefield.mp3")
-        pygame.mixer.music.play(1)
+        #pygame.mixer.music.load("sounds/Battlefield.mp3")
+        #pygame.mixer.music.play(1)
 
     # Este es el bucle de nuestro juego
     def main_loop(self):
@@ -58,8 +72,11 @@ class pydeathrace:
         pygame.display.set_caption("PyDeathRace 2.0")
         pygame.display.set_icon(pygame.image.load(os.path.join("img/icon.png")))
 
+
     # Para manejar las entradas
     def _handle_input(self):
+        self.mouse_pos = pygame.mouse.get_pos()
+        #self.mouse1 = Mouse(self.pantalla, self.event)
 
         for self.event in pygame.event.get():
             if self.event.type == pygame.QUIT or (
@@ -67,7 +84,12 @@ class pydeathrace:
             ):
                 quit()
 
-            #Aqui Añadiremos la logica que va a tener el juego
+            # Aqui Añadiremos la logica que va a tener el juego
+            if self.event.type == pygame.MOUSEBUTTONDOWN:
+                if self.play_button.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
+                    self.click2_sound.play()
+                    self.menu = "play"
+
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
@@ -76,24 +98,30 @@ class pydeathrace:
 
 
 
+
     # Par adibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
 
-        #Con esta linea podemos ver la imagen de fondo
-        self.imagen_inicio.place()
+        if self.menu == "inicio":
+            self.fondo_inicio.place()
+            self.title_text.place(True, (0, -200))
+            self.play_button.place(True, (0, -45))
+            self.about_button.place(True, (0, 70))
 
+        elif self.menu == "play":
+            self.fondo_menu.place()
+            self.menu_musica.play()
 
-
-        self.title_text.place(True, (25, -300))
 
 
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
-        print(self.ancho, self.alto)
+        print(self.mouse_pos[0], self.mouse_pos[1])
+        print("Boton: ", self.play_button.rect)
 
         # update screen
         pygame.display.update()
         pygame.display.flip()
-
+        self.clock.tick(60)

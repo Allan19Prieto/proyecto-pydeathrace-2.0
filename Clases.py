@@ -9,7 +9,7 @@ from pygame.locals import *
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 pygame.init()
-# sonidos para el click
+#sonidos para el click
 sound_volume = 2
 click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
 click1.set_volume(sound_volume)
@@ -53,14 +53,15 @@ class Mouse():
 
 #Clase para que la imagen se vea del tamaño de la pantalla
 class Image():
-    def __init__(self, name: str, wh: tuple, pantalla, ventana):
-        self.image = pygame.image.load(os.path.join("img", name))
+    def __init__(self, file: str, name: str, wh: tuple, pantalla, ventana):
+        self.image = pygame.image.load(os.path.join(file, name))
         self.image = pygame.transform.scale(self.image, wh)
         self.rect = self.image.get_rect()
         self.brightness = 0
         self.pantalla = pantalla
         self.ventana =  ventana
 
+    #Funcion para colocar las imagenes en un lugar espesifico de la pantalla
     def place(self, center: bool = False, xy: tuple = (0, 0)):
         if center:
             self.rect.center = self.ventana.center
@@ -84,6 +85,7 @@ class Text():
         self.image = self.font.render(self.text, False, self.color, self.background)
         self.rect = self.image.get_rect()
 
+    #Funcion para colocar el texto en un lugar especifico de la pantalla
     def place(self, center: bool = False, xy: tuple = (0, 0)):
         if center:
             self.rect.center = self.ventana.center
