@@ -22,8 +22,10 @@ class pydeathrace:
         # Nos permite obtener el tamaño de la pantalla completa
         user32 = ctypes.windll.user32
         user32.SetProcessDPIAware()
-        self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-        self.pantalla = pygame.display.set_mode((self.ancho - 5, self.alto - 52))
+        #self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+        self.ancho = 1361
+        self.alto = 716
+        self.pantalla = pygame.display.set_mode((self.ancho , self.alto ))
         self.window_rect = self.pantalla.get_rect()
 
         # Vaviables para los fondos de pantalla
@@ -32,27 +34,32 @@ class pydeathrace:
         # Fondo de pantalla que se colocara
         self.imagen_inicio = self.fondo_inicio
 
+        self.imagen1 = pygame.image.load("button/play.png")
+        self.imagen2 = pygame.image.load("button/Red Box Button.png")
+        self.btn1 = Boton(self.imagen1, self.imagen2)
 
         # tocar musica inicial
         pygame.mixer.music.load("sounds/Battlefield.mp3")
         pygame.mixer.music.play(1)
 
+    # Este es el bucle de nuestro juego
     def main_loop(self):
         while True:
             self._handle_input()
             self._process_game_logic()
             self._draw()
 
+    # El init pygame es siempre necesario al inicio de un guego qcon pygame
     def _init_pygame(self):
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
         pygame.init()
+
         #Nombre y icono
         pygame.display.set_caption("PyDeathRace 2.0")
         pygame.display.set_icon(pygame.image.load(os.path.join("img/icon.png")))
 
-        # Mixer para los sonidos
-        #pygame.mixer.pre_init(44100, -16, 2, 2048)
-        #pygame.mixer.init()
-
+    # Para manejar las entradas
     def _handle_input(self):
 
         for self.event in pygame.event.get():
@@ -61,11 +68,16 @@ class pydeathrace:
             ):
                 quit()
 
+            #Aqui Añadiremos la logica que va a tener el juego
 
+    # Par amanejar la logica del juego
     def _process_game_logic(self):
         #Se llama el Mpuse
         self.mouse1 = Mouse(self.pantalla, self.event)
 
+
+
+    # Par adibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
 
@@ -74,7 +86,9 @@ class pydeathrace:
 
         #Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
+        print(self.ancho,self.alto)
 
+        #self.btn1.update(self.pantalla,self.si)
 
         # update screen
         pygame.display.update()

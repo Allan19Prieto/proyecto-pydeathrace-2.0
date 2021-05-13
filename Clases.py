@@ -5,6 +5,7 @@ import os
 
 from pygame.locals import *
 
+#Mixer para los sonidos
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 pygame.init()
@@ -13,25 +14,9 @@ sound_volume = 2
 click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
 click1.set_volume(sound_volume)
 
-#class botton (pygame.sprite.Sprite):
-        #def (self, imagen1, imagen2, x=200, y=200):
-        #self.imagen_normal= imagen1
-        #self.imagen_seleccion =imagen2
-        #self.imagen_actual = self.imagen_normal
-        #self.rect= self.imagen_actual.get_rect ()
-        #self.rect.left, self.rect.top = (x,y)
-    #def update (self, pantalla, cursor):
-       # if cursor.collienrect (self.rect):
-           # self.imagen_actual = self.imagen_seleccion
-       # else: self.imagen_actual = self.imagen_normal
-
-        #pantalla.blit (self.imagen_actual, self.rect)]
-#Clase para crear ul cursos
-#Mixer para los sonidos
-
 #La clase para controlar el mouase y el cursoss
 class Mouse():
-    def __init__(self, pantalla ,event):
+    def __init__(self, pantalla, event):
         """ Constructor """
         self.pantalla = pantalla
         self.event = event
@@ -51,7 +36,9 @@ class Mouse():
 
     def coordenadas_cursor(self):
         """ Captura cordenadas del mouse """
+        #print(pygame.mouse.get_pos())
         return pygame.mouse.get_pos()
+
 
     def coordenadas_ponteiro(self):
         """ Exatablece las cordenadas del puntero del mouse"""
