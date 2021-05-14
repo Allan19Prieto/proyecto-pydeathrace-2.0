@@ -15,6 +15,7 @@ purple = (255, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
 
+
 class pydeathrace:
     def __init__(self):
         self._init_pygame()
@@ -34,6 +35,10 @@ class pydeathrace:
         #Variable para el menu
         self.menu = "inicio"
 
+        #Ejemplo para los puntos
+        self.puntos = 0
+        #self.p = puntos
+
         # Fondos de pantalla
         self.fondo_inicio = Image("img", "main.jpg", (self.ancho, self.alto), self.pantalla, self.window_rect)
         self.fondo_menu = Image("img", "Fondo2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
@@ -46,6 +51,8 @@ class pydeathrace:
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
         self.play_button = Image("button", "play.png", (200, 85), self.pantalla, self.window_rect)
         self.about_button = Image("button", "about.png", (200, 85), self.pantalla, self.window_rect)
+
+
 
 
         # Fondo de pantalla que se colocara
@@ -77,6 +84,8 @@ class pydeathrace:
     def _handle_input(self):
         self.mouse_pos = pygame.mouse.get_pos()
         #self.mouse1 = Mouse(self.pantalla, self.event)
+        # Texto de puntos
+        self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
 
         for self.event in pygame.event.get():
             if self.event.type == pygame.QUIT or (
@@ -88,7 +97,9 @@ class pydeathrace:
             if self.event.type == pygame.MOUSEBUTTONDOWN:
                 if self.play_button.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
                     self.click2_sound.play()
+                    self.puntos += 1
                     self.menu = "play"
+
 
 
     # Par amanejar la logica del juego
@@ -106,11 +117,13 @@ class pydeathrace:
         if self.menu == "inicio":
             self.fondo_inicio.place()
             self.title_text.place(True, (0, -200))
+            self.texto_puntos.place(True, (500, -200))
             self.play_button.place(True, (0, -45))
             self.about_button.place(True, (0, 70))
 
         elif self.menu == "play":
             self.fondo_menu.place()
+            self.texto_puntos.place(True, (500, -200))
             self.menu_musica.play()
 
 
