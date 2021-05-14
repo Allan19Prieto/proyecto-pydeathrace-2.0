@@ -36,8 +36,8 @@ class Car:
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Car tutorial")
-        width = 1280
+        pygame.display.set_caption("Prueba Carro")
+        width = 1365
         height = 720
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
@@ -67,12 +67,12 @@ class Game:
                 if car.velocity.x < 0:
                     car.acceleration = car.brake_deceleration
                 else:
-                    car.acceleration += 1 * dt
+                    car.acceleration += 15 * dt
             elif pressed[pygame.K_DOWN]:
                 if car.velocity.x > 0:
                     car.acceleration = -car.brake_deceleration
                 else:
-                    car.acceleration -= 2 * dt
+                    car.acceleration -= 10 * dt
 
             elif pressed[pygame.K_SPACE]:
                 if abs(car.velocity.x) > dt * car.brake_deceleration:
