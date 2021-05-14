@@ -83,6 +83,7 @@ class pydeathrace:
     # Para manejar las entradas
     def _handle_input(self):
         self.mouse_pos = pygame.mouse.get_pos()
+        self.mousex , self.mousey = pygame.mouse.get_pos()
         #self.mouse1 = Mouse(self.pantalla, self.event)
         # Texto de puntos
         self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
