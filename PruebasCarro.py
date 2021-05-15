@@ -46,6 +46,7 @@ class Game:
         self.ticks = 60
         self.exit = False
         self.pista1 = Image("img", "Pista1-png.png", (width, height), self.screen, self.window_rect)
+        self.carro = Image("img", "car12.png", (67, 37), self.screen, self.window_rect)
 
 
     def run(self):
@@ -105,12 +106,15 @@ class Game:
             # Drawing
             self.screen.fill((0, 0, 0))
             self.pista1.place()
+            self.carro.place()
             rotated = pygame.transform.rotate(car_image, car.angle)
             rect = rotated.get_rect()
             self.screen.blit(rotated, car.position * ppu - (rect.width / 2, rect.height / 2))
             pygame.display.flip()
 
             print(mousex, mousey)
+            print("Carro:", car.position)
+
 
             self.clock.tick(self.ticks)
         pygame.quit()
