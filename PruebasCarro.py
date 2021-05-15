@@ -1,3 +1,4 @@
+from Clases import *
 import os
 import pygame
 from math import sin, radians, degrees, copysign
@@ -5,14 +6,14 @@ from pygame.math import Vector2
 
 
 class Car:
-    def __init__(self, x, y, angle=0.0, length=4, max_steering=30, max_acceleration=5.0):
+    def __init__(self, x, y, angle=0.0, length=4, max_steering=100, max_acceleration=5.0):
         self.position = Vector2(x, y)
         self.velocity = Vector2(0.0, 0.0)
         self.angle = angle
         self.length = length
         self.max_acceleration = max_acceleration
         self.max_steering = max_steering
-        self.max_velocity = 20
+        self.max_velocity = 11
         self.brake_deceleration = 10
         self.free_deceleration = 2
 
@@ -40,9 +41,11 @@ class Game:
         width = 1365
         height = 720
         self.screen = pygame.display.set_mode((width, height))
+        self.window_rect = self.screen.get_rect()
         self.clock = pygame.time.Clock()
         self.ticks = 60
         self.exit = False
+        self.pista1 = Image("img", "Pista1-png.png", (width, height), self.screen, self.window_rect)
 
 
     def run(self):
@@ -62,6 +65,7 @@ class Game:
 
             # User input
             pressed = pygame.key.get_pressed()
+            mousex , mousey = pygame.mouse.get_pos()
 
             if pressed[pygame.K_UP]:
                 if car.velocity.x < 0:
@@ -100,10 +104,13 @@ class Game:
 
             # Drawing
             self.screen.fill((0, 0, 0))
+            self.pista1.place()
             rotated = pygame.transform.rotate(car_image, car.angle)
             rect = rotated.get_rect()
             self.screen.blit(rotated, car.position * ppu - (rect.width / 2, rect.height / 2))
             pygame.display.flip()
+
+            print(mousex, mousey)
 
             self.clock.tick(self.ticks)
         pygame.quit()
