@@ -31,7 +31,7 @@ class Mouse():
             #Se usa la imagen que esta en la posicion 1 del arreglo
             cursor = self.imgens_cursor[1]
             #Par aque suene al hacer Click
-            click1.play()
+            #click1.play()
         return cursor
 
     def coordenadas_cursor(self):

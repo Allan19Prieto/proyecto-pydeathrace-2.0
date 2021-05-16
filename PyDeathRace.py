@@ -15,7 +15,12 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 aqua = (127, 255, 212)
 darksalmon = (233, 150, 122)
-
+cyan = (0, 255, 255)
+darkslategray = (47, 79, 79)
+darkkahaki = (189, 183, 107)
+darkorange = (255, 140, 0)
+darkred = (139, 0, 0)
+crimson = (220, 20, 60)
 
 class pydeathrace:
     def __init__(self):
@@ -40,20 +45,47 @@ class pydeathrace:
         self.puntos = 0
         #self.p = puntos
 
-        # Fondos de pantalla
-        self.fondo_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto+50), self.pantalla, self.window_rect)
-        self.fondo_menu = Image("img", "Fondo2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        #Botones
+        self.btn_atras = Image("button", "Atras.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_guardar = Image("button", "Guardar.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_indicaciones = Image("button", "Indicaciones.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_info = Image("button", "Info.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_jugar = Image("button", "Jugar.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_menu = Image("button", "Menu.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_nombre = Image("button", "Nombre.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_pausa = Image("button", "Pausa.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_play = Image("button", "Play.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_puntaje = Image("button", "Puntaje.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_salir = Image("button", "Salir.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_terminar = Image("button", "Terminar.png", (180, 115), self.pantalla, self.window_rect)
+
+        # Fondo pantalla
+        self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+
+        #Pistas
+        self.p_pista1 = Image("img", "Pista1-png.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        self.p_pista2 = Image("img", "Pista2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        self.p_pista3 = Image("img", "Pista3.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
-        self.menu_musica = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
-        self.click2_sound = pygame.mixer.Sound(os.path.join("sounds", "click2.wav"))
+        self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
+        self.s_click = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))
+        self.s_click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
+        self.s_click2 = pygame.mixer.Sound(os.path.join("sounds", "click2.wav"))
+        self.s_click3 = pygame.mixer.Sound(os.path.join("sounds", "click3.wav"))
+        self.s_explode = pygame.mixer.Sound(os.path.join("sounds", "explode.wav"))
+        self.s_final = pygame.mixer.Sound(os.path.join("sounds", "final.ogg"))
+        self.s_go = pygame.mixer.Sound(os.path.join("sounds", "go.wav"))
+        self.s_lose = pygame.mixer.Sound(os.path.join("sounds", "lose.wav"))
+        self.s_race = pygame.mixer.Sound(os.path.join("sounds", "race.wav"))
+        self.s_ready = pygame.mixer.Sound(os.path.join("sounds", "ready.wav"))
+        self.s_tiro = pygame.mixer.Sound(os.path.join("sounds", "tiro.wav"))
+        self.s_warning = pygame.mixer.Sound(os.path.join("sounds", "warning.wav"))
+        self.s_win = pygame.mixer.Sound(os.path.join("sounds", "win.wav"))
+        self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
 
-        # Pantalla Inicio
+        # Texto
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
-        self.play_button = Image("button", "Play.png", (180, 115), self.pantalla, self.window_rect)
-        self.about_button = Image("button", "Info.png", (180, 115), self.pantalla, self.window_rect)
-
-
 
 
         # Fondo de pantalla que se colocara
@@ -80,7 +112,6 @@ class pydeathrace:
         pygame.display.set_caption("PyDeathRace 2.0")
         pygame.display.set_icon(pygame.image.load(os.path.join("img/icon.png")))
 
-
     # Para manejar las entradas
     def _handle_input(self):
         self.mouse_pos = pygame.mouse.get_pos()
@@ -97,42 +128,42 @@ class pydeathrace:
 
             # Aqui Añadiremos la logica que va a tener el juego
             if self.event.type == pygame.MOUSEBUTTONDOWN:
-                if self.play_button.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
-                    self.click2_sound.play()
+                if self.btn_play.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
+                    self.s_click2.play()
                     self.puntos += 1
                     self.menu = "play"
-
-
+                if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
+                    self.s_click2.play()
+                    self.puntos += 1
+                    self.menu = "inicio"
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
         #Se llama el Mpuse
         self.mouse1 = Mouse(self.pantalla, self.event)
 
-
-
-
     # Par adibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
 
         if self.menu == "inicio":
-            self.fondo_inicio.place()
-            self.title_text.place(True, (0, -200))
-            self.texto_puntos.place(True, (500, -200))
-            self.play_button.place(True, (0, -45))
-            self.about_button.place(True, (0, 100))
+            self.f_inicio.place()
+            #self.title_text.place(True, (0, -200))
+            #self.texto_puntos.place(True, (500, -200))
+            self.btn_play.place(True, (0, -45))
+            self.btn_info.place(True, (0, 100))
 
         elif self.menu == "play":
-            self.fondo_menu.place()
+            self.f_inicio.place()
             self.texto_puntos.place(True, (500, -200))
-            self.menu_musica.play()
+            #self.menu_musica.play()
+            self.btn_atras.place(True, (0, 100))
 
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
         print(self.mouse_pos[0], self.mouse_pos[1])
-        print("Boton: ", self.play_button.rect)
+        print("Boton: ", self.btn_play.rect)
 
         # update screen
         pygame.display.update()
