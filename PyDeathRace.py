@@ -1,11 +1,10 @@
 
 from Clases import *
-
 import pygame
 import ctypes
 import os
 
-#Algunos colores
+#Colores
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
@@ -40,7 +39,7 @@ class pydeathrace:
         #self.p = puntos
 
         # Fondos de pantalla
-        self.fondo_inicio = Image("img", "main.jpg", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        self.fondo_inicio = Image("img", "FondoPrincipal.png", (self.ancho+200, self.alto+200), self.pantalla, self.window_rect)
         self.fondo_menu = Image("img", "Fondo2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
@@ -49,8 +48,8 @@ class pydeathrace:
 
         # Pantalla Inicio
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
-        self.play_button = Image("button", "play.png", (200, 85), self.pantalla, self.window_rect)
-        self.about_button = Image("button", "about.png", (200, 85), self.pantalla, self.window_rect)
+        self.play_button = Image("button", "Play.png", (180, 115), self.pantalla, self.window_rect)
+        self.about_button = Image("button", "Info.png", (180, 115), self.pantalla, self.window_rect)
 
 
 
@@ -120,7 +119,7 @@ class pydeathrace:
             self.title_text.place(True, (0, -200))
             self.texto_puntos.place(True, (500, -200))
             self.play_button.place(True, (0, -45))
-            self.about_button.place(True, (0, 70))
+            self.about_button.place(True, (0, 100))
 
         elif self.menu == "play":
             self.fondo_menu.place()
