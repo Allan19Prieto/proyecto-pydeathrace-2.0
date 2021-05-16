@@ -1,38 +1,15 @@
 from Clases import *
 import os
 import pygame
+from pygame.locals import*
+import sys
 from math import sin, radians, degrees, copysign
 from pygame.math import Vector2
 
+from Objetos import Car
 
-class Car:
-    def __init__(self, x, y, angle=0.0, length=4, max_steering=100, max_acceleration=5.0):
-        self.position = Vector2(x, y)
-        self.velocity = Vector2(0.0, 0.0)
-        self.angle = angle
-        self.length = length
-        self.max_acceleration = max_acceleration
-        self.max_steering = max_steering
-        self.max_velocity = 11
-        self.brake_deceleration = 10
-        self.free_deceleration = 2
+white = (255, 255, 255, 255)
 
-        self.acceleration = 0.0
-        self.steering = 0.0
-
-
-    def update(self, dt):
-        self.velocity += (self.acceleration * dt, 0)
-        self.velocity.x = max(-self.max_velocity, min(self.velocity.x, self.max_velocity))
-
-        if self.steering:
-            turning_radius = self.length / sin(radians(self.steering))
-            angular_velocity = self.velocity.x / turning_radius
-        else:
-            angular_velocity = 0
-
-        self.position += self.velocity.rotate(-self.angle) * dt
-        self.angle += degrees(angular_velocity) * dt
 
 class Game:
     def __init__(self):
@@ -46,15 +23,23 @@ class Game:
         self.ticks = 60
         self.exit = False
         self.pista1 = Image("img", "Pista1-png.png", (width, height), self.screen, self.window_rect)
+        self.pista2 = Image("img", "Pista2.png", (width, height), self.screen, self.window_rect)
         self.carro = Image("img", "car12.png", (67, 37), self.screen, self.window_rect)
+        self.vpi = self.pista1
+        self.vidas = 100
 
 
     def run(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         image_path = os.path.join(current_dir, "img/car12.png")
         car_image = pygame.image.load(image_path)
-        car = Car(0, 0)
+        car = Car(30, 5)
         ppu = 32
+        #poi = car_image.get_rect()
+
+
+
+        #pocar = car.get_rect()
 
         while not self.exit:
             dt = self.clock.get_time() / 1000
@@ -67,12 +52,10 @@ class Game:
             # User input
             pressed = pygame.key.get_pressed()
             mousex , mousey = pygame.mouse.get_pos()
+            #self.rect = image_path.get_rect()
 
             if pressed[pygame.K_UP]:
-                if car.velocity.x < 0:
-                    car.acceleration = car.brake_deceleration
-                else:
-                    car.acceleration += 15 * dt
+                car.acelera(dt)
             elif pressed[pygame.K_DOWN]:
                 if car.velocity.x > 0:
                     car.acceleration = -car.brake_deceleration
@@ -107,6 +90,7 @@ class Game:
             self.screen.fill((0, 0, 0))
             self.pista1.place()
             self.carro.place()
+            #print(self.carro.rect)
             rotated = pygame.transform.rotate(car_image, car.angle)
             rect = rotated.get_rect()
             self.screen.blit(rotated, car.position * ppu - (rect.width / 2, rect.height / 2))
@@ -114,6 +98,22 @@ class Game:
 
             print(mousex, mousey)
             print("Carro:", car.position)
+
+            #print("Color:" , self.screen.get_at((mousex, mousey)))
+
+            if self.screen.get_at((int(car.position.x)*31,int(car.position.y)*31)) == (white):
+                self.vidas -= 1
+
+            if self.vidas <= 50:
+                self.vpi = self.pista2
+
+
+            #print(self.rect.x)
+            #if self.screen.get_at((mousex, mousey)) == (white):
+             #   print("Esta en color blanco")
+            #else:
+             #   print("Esta en color negro")
+            print(self.vidas)
 
 
             self.clock.tick(self.ticks)
