@@ -4,7 +4,7 @@ import pygame
 import ctypes
 import os
 
-#Colores
+# Colores
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
@@ -13,6 +13,8 @@ celeste = (0, 255, 255)
 purple = (255, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
+aqua = (127, 255, 212)
+darksalmon = (233, 150, 122)
 
 
 class pydeathrace:
@@ -39,7 +41,7 @@ class pydeathrace:
         #self.p = puntos
 
         # Fondos de pantalla
-        self.fondo_inicio = Image("img", "FondoPrincipal.png", (self.ancho+200, self.alto+200), self.pantalla, self.window_rect)
+        self.fondo_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto+50), self.pantalla, self.window_rect)
         self.fondo_menu = Image("img", "Fondo2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
