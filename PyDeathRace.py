@@ -68,13 +68,13 @@ class pydeathrace:
         self.p_pista3 = Image("img", "Pista3.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
-        self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
+        #self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
         self.s_click = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))
         self.s_click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
         self.s_click2 = pygame.mixer.Sound(os.path.join("sounds", "click2.wav"))
         self.s_click3 = pygame.mixer.Sound(os.path.join("sounds", "click3.wav"))
         self.s_explode = pygame.mixer.Sound(os.path.join("sounds", "explode.wav"))
-        self.s_final = pygame.mixer.Sound(os.path.join("sounds", "final.ogg"))
+        #self.s_final = pygame.mixer.Sound(os.path.join("sounds", "final.ogg"))
         self.s_go = pygame.mixer.Sound(os.path.join("sounds", "go.wav"))
         self.s_lose = pygame.mixer.Sound(os.path.join("sounds", "lose.wav"))
         self.s_race = pygame.mixer.Sound(os.path.join("sounds", "race.wav"))
@@ -137,12 +137,22 @@ class pydeathrace:
                     self.puntos += 1
                     self.menu = "inicio"
 
+            if self.event.type == pygame.MOUSEBUTTONDOWN:
+                if self.btn_info.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
+                    self.s_click2.play()
+                    self.puntos += 1
+                    self.menu = "info"
+                if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "info":
+                    self.s_click2.play()
+                    self.puntos += 1
+                    self.menu = "inicio"
+
     # Par amanejar la logica del juego
     def _process_game_logic(self):
-        #Se llama el Mpuse
+        #Se llama el Mouse
         self.mouse1 = Mouse(self.pantalla, self.event)
 
-    # Par adibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
+    # Para dibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
 
@@ -159,11 +169,17 @@ class pydeathrace:
             #self.menu_musica.play()
             self.btn_atras.place(True, (0, 100))
 
+        elif self.menu == "info":
+            self.f_inicio.place()
+            self.texto_puntos.place(True, (500, -200))
+            self.btn_atras.place(True, (0, 10))
+
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
         print(self.mouse_pos[0], self.mouse_pos[1])
         print("Boton: ", self.btn_play.rect)
+
 
         # update screen
         pygame.display.update()
