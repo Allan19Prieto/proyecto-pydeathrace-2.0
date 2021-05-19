@@ -7,7 +7,7 @@ from math import sin, radians, degrees, copysign
 from pygame.math import Vector2
 
 class Car():
-    def __init__(self, x, y,   angle=0.0, length=4, max_steering=100, max_acceleration=5.0):
+    def __init__(self, x, y,   angle = 0.0, length=4, max_steering=100, max_acceleration=5.0):
         self.position = Vector2(x, y)
         self.velocity = Vector2(0.0, 0.0)
         self.angle = angle

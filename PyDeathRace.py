@@ -46,16 +46,16 @@ class pydeathrace:
         #self.p = puntos
 
         #Botones
-        self.btn_atras = Image("button", "Atras.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_atras = Image("button", "Atras.png", (90, 56), self.pantalla, self.window_rect)
         self.btn_guardar = Image("button", "Guardar.png", (180, 115), self.pantalla, self.window_rect)
-        self.btn_indicaciones = Image("button", "Indicaciones.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_indicaciones = Image("button", "Indicaciones.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_info = Image("button", "Info.png", (180, 115), self.pantalla, self.window_rect)
-        self.btn_jugar = Image("button", "Jugar.png", (180, 115), self.pantalla, self.window_rect)
-        self.btn_menu = Image("button", "Menu.png", (180, 115), self.pantalla, self.window_rect)
-        self.btn_nombre = Image("button", "Nombre.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_jugar = Image("button", "Jugar.png", (230, 115), self.pantalla, self.window_rect)
+        self.btn_menu = Image("button", "Menu.png", (290, 225), self.pantalla, self.window_rect)
+        self.btn_nombre = Image("button", "Nombre.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_pausa = Image("button", "Pausa.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_play = Image("button", "Play.png", (180, 115), self.pantalla, self.window_rect)
-        self.btn_puntaje = Image("button", "Puntaje.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_puntaje = Image("button", "Puntaje.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_salir = Image("button", "Salir.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_terminar = Image("button", "Terminar.png", (180, 115), self.pantalla, self.window_rect)
 
@@ -63,9 +63,9 @@ class pydeathrace:
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         #Pistas
-        self.p_pista1 = Image("img", "Pista1-png.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
-        self.p_pista2 = Image("img", "Pista2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
-        self.p_pista3 = Image("img", "Pista3.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        #self.p_pista1 = Image("img", "Pista1-png.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        #self.p_pista2 = Image("img", "Pista2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+        #self.p_pista3 = Image("img", "Pista3.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
         #self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
@@ -85,8 +85,9 @@ class pydeathrace:
         self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
 
         # Texto
+        self.inicio_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " PyDeathRace ", crimson)
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", cyan)
-        self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Play ", cyan)
+        self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " ¿Que desea hacer? ", crimson)
         self.info_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Info ", darkslategray)
         self.indica_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " indicaciones ", darkred)
 
@@ -112,7 +113,6 @@ class pydeathrace:
         self.mouse_pos = pygame.mouse.get_pos()
         self.mousex , self.mousey = pygame.mouse.get_pos()
 
-
         #self.mouse1 = Mouse(self.pantalla, self.event)
         # Texto de puntos
         self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
@@ -129,7 +129,6 @@ class pydeathrace:
                 #Evento del boton Play
                 if self.btn_play.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "menu":
                     self.s_click2.play()
-                    self.puntos += 1
                     self.menu = "play"
 
                 #Evento del boton info
@@ -143,11 +142,21 @@ class pydeathrace:
                     self.s_click2.play()
                     self.menu = "indica"
 
+                #***********************************************************************************************************
+                #Eventos dentro del menu principal
+                if self.btn_nombre.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
+                    self.s_click2.play()
+                    self.menu = "nombre"
+
+
                 #evento boton atras
                 if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
                         self.s_click3.play()
                         self.menu = "menu"
+                    elif self.menu == "nombre":
+                        self.s_click3.play()
+                        self.menu = "play"
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
@@ -158,31 +167,43 @@ class pydeathrace:
     def _draw(self):
         self.pantalla.fill(black)
 
+        #Vista de la pantalla de inicio
         if self.menu == "menu":
             self.f_inicio.place()
-            self.btn_play.place(True, (0, -200))
-            self.btn_info.place(True, (0, -15))
-            self.btn_indicaciones.place(True, (0,180))
-            #self.btn_salir.place(True, (100, 100))
+            self.inicio_text.place(True, (0, -310))
+            self.btn_play.place(True, (0, -125))
+            self.btn_info.place(True, (0, 55))
+            self.btn_indicaciones.place(True, (0, 240))
 
+        #Vista de la pantalla de menu
         elif self.menu == "play":
             self.f_inicio.place()
-            self.texto_puntos.place(True, (500, -200))
-            self.play_text.place(True, (0,-200))
-            #self.menu_musica.play()
-            self.btn_atras.place(True, (0, 100))
+            #self.play_text.place(True, (0, -280))
+            self.btn_menu.place(True, (0, -240))
+            self.btn_nombre.place(True, (-275, -50))
+            self.btn_puntaje.place(True, (-275, 150))
+            self.btn_jugar.place(True, (275, -50))
+            self.btn_salir.place(True, (275, 150))
+            self.btn_atras.place(True, (-590, -320))
 
+        #Vista de la pantala de informacion
         elif self.menu == "info":
             self.f_inicio.place()
-            self.info_tex.place(True, (0,-200))
-            self.texto_puntos.place(True, (500, -200))
-            self.btn_atras.place(True, (0, 10))
+            self.info_tex.place(True, (0, -390))
+            self.btn_atras.place(True, (-590, -320))
 
+        #Vista de la pantalla de indicaciones
         elif self.menu == "indica":
             self.f_inicio.place()
-            self.indica_tex.place(True, (0, -200))
-            self.btn_atras.place(True, (0, 10))
+            #self.indica_tex.place(True, (0, -200))
+            self.btn_indicaciones.place(True, (0, -290))
+            self.btn_atras.place(True, (-590, -320))
 
+        elif self.menu == "nombre":
+            self.f_inicio.place()
+            #self.indica_tex.place(True, (0, -200))
+            self.btn_nombre.place(True, (0, -290))
+            self.btn_atras.place(True, (-590, -320))
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()

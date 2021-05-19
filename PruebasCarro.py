@@ -9,6 +9,7 @@ from pygame.math import Vector2
 from Objetos import Car
 
 white = (255, 255, 255, 255)
+color_fuera_pista = (231, 134, 81, 255)
 
 
 class Game:
@@ -22,8 +23,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.ticks = 60
         self.exit = False
-        self.pista1 = Image("img", "Pista1-png.png", (width, height), self.screen, self.window_rect)
-        self.pista2 = Image("img", "Pista2.png", (width, height), self.screen, self.window_rect)
+        self.pista1 = Image("img", "Pista1.jpg", (width, height), self.screen, self.window_rect)
+        self.pista2 = Image("img", "Pista2.jpg", (width, height), self.screen, self.window_rect)
+        self.pista3 = Image("img", "Pista3.jpg", (width+10, height+10), self.screen, self.window_rect)
         self.carro = Image("img", "car12.png", (67, 37), self.screen, self.window_rect)
         self.vpi = self.pista1
         self.vidas = 100
@@ -88,7 +90,7 @@ class Game:
 
             # Drawing
             self.screen.fill((0, 0, 0))
-            self.pista1.place()
+            self.pista3.place()
             self.carro.place()
             #print(self.carro.rect)
             rotated = pygame.transform.rotate(car_image, car.angle)
@@ -99,9 +101,9 @@ class Game:
             print(mousex, mousey)
             print("Carro:", car.position)
 
-            #print("Color:" , self.screen.get_at((mousex, mousey)))
+            print("Color:" , self.screen.get_at((mousex, mousey)))
 
-            if self.screen.get_at((int(car.position.x)*31,int(car.position.y)*31)) == (white):
+            if self.screen.get_at((int(car.position.x)*31, int(car.position.y)*31)) == (color_fuera_pista):
                 self.vidas -= 1
 
             if self.vidas <= 50:
