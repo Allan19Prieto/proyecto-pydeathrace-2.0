@@ -39,7 +39,7 @@ class pydeathrace:
         self.clock = pygame.time.Clock()
 
         #Variable para el menu
-        self.menu = "inicio"
+        self.menu = "menu"
 
         #Ejemplo para los puntos
         self.puntos = 0
@@ -85,15 +85,10 @@ class pydeathrace:
         self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
 
         # Texto
-        self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", purple)
-
-
-        # Fondo de pantalla que se colocara
-        #self.imagen_inicio = self.fondo_inicio
-
-        # tocar musica inicial
-        #pygame.mixer.music.load("sounds/Battlefield.mp3")
-        #pygame.mixer.music.play(1)
+        self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", cyan)
+        self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Play ", cyan)
+        self.info_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Info ", darkslategray)
+        self.indica_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " indicaciones ", darkred)
 
     # Este es el bucle de nuestro juego
     def main_loop(self):
@@ -116,6 +111,8 @@ class pydeathrace:
     def _handle_input(self):
         self.mouse_pos = pygame.mouse.get_pos()
         self.mousex , self.mousey = pygame.mouse.get_pos()
+
+
         #self.mouse1 = Mouse(self.pantalla, self.event)
         # Texto de puntos
         self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
@@ -128,24 +125,29 @@ class pydeathrace:
 
             # Aqui Añadiremos la logica que va a tener el juego
             if self.event.type == pygame.MOUSEBUTTONDOWN:
-                if self.btn_play.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
+
+                #Evento del boton Play
+                if self.btn_play.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "menu":
                     self.s_click2.play()
                     self.puntos += 1
                     self.menu = "play"
-                if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
-                    self.s_click2.play()
-                    self.puntos += 1
-                    self.menu = "inicio"
 
-            if self.event.type == pygame.MOUSEBUTTONDOWN:
-                if self.btn_info.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "inicio":
+                #Evento del boton info
+                if self.btn_info.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "menu":
                     self.s_click2.play()
                     self.puntos += 1
                     self.menu = "info"
-                if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "info":
+
+                #Evento del boton indicaciones
+                if self.btn_indicaciones.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "menu":
                     self.s_click2.play()
-                    self.puntos += 1
-                    self.menu = "inicio"
+                    self.menu = "indica"
+
+                #evento boton atras
+                if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
+                    if self.menu == "play" or self.menu == "info" or self.menu == "indica":
+                        self.s_click3.play()
+                        self.menu = "menu"
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
@@ -156,30 +158,38 @@ class pydeathrace:
     def _draw(self):
         self.pantalla.fill(black)
 
-        if self.menu == "inicio":
+        if self.menu == "menu":
             self.f_inicio.place()
-            #self.title_text.place(True, (0, -200))
-            #self.texto_puntos.place(True, (500, -200))
-            self.btn_play.place(True, (0, -45))
-            self.btn_info.place(True, (0, 100))
+            self.btn_play.place(True, (0, -200))
+            self.btn_info.place(True, (0, -15))
+            self.btn_indicaciones.place(True, (0,180))
+            #self.btn_salir.place(True, (100, 100))
 
         elif self.menu == "play":
             self.f_inicio.place()
             self.texto_puntos.place(True, (500, -200))
+            self.play_text.place(True, (0,-200))
             #self.menu_musica.play()
             self.btn_atras.place(True, (0, 100))
 
         elif self.menu == "info":
             self.f_inicio.place()
+            self.info_tex.place(True, (0,-200))
             self.texto_puntos.place(True, (500, -200))
+            self.btn_atras.place(True, (0, 10))
+
+        elif self.menu == "indica":
+            self.f_inicio.place()
+            self.indica_tex.place(True, (0, -200))
             self.btn_atras.place(True, (0, 10))
 
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
-        print(self.mouse_pos[0], self.mouse_pos[1])
-        print("Boton: ", self.btn_play.rect)
+        #print(self.mouse_pos[0], self.mouse_pos[1])
+        #print("Boton: ", self.btn_play.rect)
 
+        print(self.menu)
 
         # update screen
         pygame.display.update()
