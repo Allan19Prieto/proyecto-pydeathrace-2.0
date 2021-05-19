@@ -144,17 +144,28 @@ class pydeathrace:
 
                 #***********************************************************************************************************
                 #Eventos dentro del menu principal
+                #Nombre
                 if self.btn_nombre.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
                     self.s_click2.play()
                     self.menu = "nombre"
 
+                #Puntos
+                if self.btn_puntaje.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
+                    self.s_click2.play()
+                    self.menu = "puntaje"
+
+
+
+                #evento del boton salir
+                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
+                    quit()
 
                 #evento boton atras
                 if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
                         self.s_click3.play()
                         self.menu = "menu"
-                    elif self.menu == "nombre":
+                    elif self.menu == "nombre" or self.menu == "puntaje":
                         self.s_click3.play()
                         self.menu = "play"
 
@@ -203,6 +214,12 @@ class pydeathrace:
             self.f_inicio.place()
             #self.indica_tex.place(True, (0, -200))
             self.btn_nombre.place(True, (0, -290))
+            self.btn_atras.place(True, (-590, -320))
+
+        elif self.menu == "puntaje":
+            self.f_inicio.place()
+            #self.indica_tex.place(True, (0, -200))
+            self.btn_puntaje.place(True, (0, -290))
             self.btn_atras.place(True, (-590, -320))
 
         # Colocamos en mouse en la pantalla
