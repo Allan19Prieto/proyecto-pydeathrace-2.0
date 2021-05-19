@@ -69,10 +69,12 @@ def main():
         for box in input_boxes:
             box.update()
 
+
         screen.fill((30, 30, 30))
         for box in input_boxes:
             box.draw(screen)
 
+        print(input_box1.text)
         pg.display.flip()
         clock.tick(30)
 

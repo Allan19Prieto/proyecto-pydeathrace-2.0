@@ -41,6 +41,9 @@ class pydeathrace:
         #Variable para el menu
         self.menu = "menu"
 
+        #Nombre de usuarios
+        self.nombre_usuario = "#"
+
         #Ejemplo para los puntos
         self.puntos = 0
         #self.p = puntos
@@ -85,11 +88,16 @@ class pydeathrace:
         self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
 
         # Texto
+        self.usuario_nomnre = Text(self.pantalla, self.window_rect, "game_font",30, crimson, " Usuario: " + self.nombre_usuario)
         self.inicio_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " PyDeathRace ", crimson)
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", cyan)
         self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " ¿Que desea hacer? ", crimson)
         self.info_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Info ", darkslategray)
-        self.indica_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " indicaciones ", darkred)
+        self.indica_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " indicaciones ", darkred)
+        self.titulo_nombre_text = Text(self.pantalla, self.window_rect, "game_font", 50, white, " Ingrese su nombre de usuario, por favor ", darkred)
+
+        self.input_box1 = CajaText(100, 100, 140, 32)
+        self.done = False
 
     # Este es el bucle de nuestro juego
     def main_loop(self):
@@ -123,6 +131,10 @@ class pydeathrace:
             ):
                 quit()
 
+            self.input_box1.handle_event(self.event)
+            self.input_box1.update()
+            #self.nombre2 = str(self.input_box1.text)
+
             # Aqui Añadiremos la logica que va a tener el juego
             if self.event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -155,7 +167,6 @@ class pydeathrace:
                     self.menu = "puntaje"
 
 
-
                 #evento del boton salir
                 if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
                     quit()
@@ -166,6 +177,7 @@ class pydeathrace:
                         self.s_click3.play()
                         self.menu = "menu"
                     elif self.menu == "nombre" or self.menu == "puntaje":
+                        self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
 
@@ -177,6 +189,7 @@ class pydeathrace:
     # Para dibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
+
 
         #Vista de la pantalla de inicio
         if self.menu == "menu":
@@ -191,6 +204,7 @@ class pydeathrace:
             self.f_inicio.place()
             #self.play_text.place(True, (0, -280))
             self.btn_menu.place(True, (0, -240))
+            self.usuario_nomnre.place(True, (480, -320))
             self.btn_nombre.place(True, (-275, -50))
             self.btn_puntaje.place(True, (-275, 150))
             self.btn_jugar.place(True, (275, -50))
@@ -210,12 +224,15 @@ class pydeathrace:
             self.btn_indicaciones.place(True, (0, -290))
             self.btn_atras.place(True, (-590, -320))
 
+        #Vista de la pantalla nombre
         elif self.menu == "nombre":
             self.f_inicio.place()
-            #self.indica_tex.place(True, (0, -200))
+            self.input_box1.draw(self.pantalla, self.window_rect, True, (0, 0))
             self.btn_nombre.place(True, (0, -290))
+            self.titulo_nombre_text.place(True, (0, -150))
             self.btn_atras.place(True, (-590, -320))
 
+        #Vista de la pantalla puntaje
         elif self.menu == "puntaje":
             self.f_inicio.place()
             #self.indica_tex.place(True, (0, -200))
@@ -228,6 +245,7 @@ class pydeathrace:
         #print("Boton: ", self.btn_play.rect)
 
         print(self.menu)
+        #print(self.nombre2)
 
         # update screen
         pygame.display.update()

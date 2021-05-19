@@ -5,12 +5,10 @@ from pygame.locals import*
 import sys
 from math import sin, radians, degrees, copysign
 from pygame.math import Vector2
-
 from Objetos import Car
 
 white = (255, 255, 255, 255)
 color_fuera_pista = (231, 134, 81, 255)
-
 
 class Game:
     def __init__(self):
@@ -38,8 +36,6 @@ class Game:
         car = Car(30, 5)
         ppu = 32
         #poi = car_image.get_rect()
-
-
 
         #pocar = car.get_rect()
 
@@ -90,7 +86,7 @@ class Game:
 
             # Drawing
             self.screen.fill((0, 0, 0))
-            self.pista3.place()
+            self.pista1.place()
             self.carro.place()
             #print(self.carro.rect)
             rotated = pygame.transform.rotate(car_image, car.angle)
@@ -108,7 +104,6 @@ class Game:
 
             if self.vidas <= 50:
                 self.vpi = self.pista2
-
 
             #print(self.rect.x)
             #if self.screen.get_at((mousex, mousey)) == (white):
