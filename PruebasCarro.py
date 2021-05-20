@@ -51,8 +51,8 @@ class Game:
         clock = pygame.time.Clock()
 
         while not self.exit:
-            time_passed = clock.tick(self.fps)
-            time_passed_seconds = time_passed / 1000.0
+            #time_passed = clock.tick(self.fps)
+            #time_passed_seconds = time_passed / 1000.0
             dt = self.clock.get_time() / 1000
 
 
@@ -111,19 +111,15 @@ class Game:
             #self.carro.place(True, (self.x, self.y))
 
             if self.y == 150:
-                self.x -= 10
-            if  self.x == 170:
-                self.y += 10
+                self.x -= 5
+            if self.x == 170:
+                self.y += 5
             if self.y == 500:
-                self.x += 10
+                self.x += 5
             if self.x == 1150:
-                self.y -= 10
-
+                self.y -= 5
 
             print("Rectangulo: ", self.x, self.y)
-
-
-
 
 
 

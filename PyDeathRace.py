@@ -63,6 +63,10 @@ class pydeathrace:
         self.btn_salir = Image("button", "Salir.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_terminar = Image("button", "Terminar.png", (180, 115), self.pantalla, self.window_rect)
 
+        self.btn_iformacion = Image("img", "Informacion.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_cuadroinfo = Image("img", "CuadroInfo.png", (580, 515), self.pantalla, self.window_rect)
+
+
         # Fondo pantalla
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
@@ -134,6 +138,7 @@ class pydeathrace:
 
             self.input_box1.handle_event(self.event)
             self.input_box1.update()
+            self.nombre_usuario = self.input_box1.text
             #self.nombre2 = str(self.input_box1.text)
 
             # Aqui Añadiremos la logica que va a tener el juego
@@ -178,7 +183,7 @@ class pydeathrace:
                         self.s_click3.play()
                         self.menu = "menu"
                     elif self.menu == "nombre" or self.menu == "puntaje":
-                        self.nombre_usuario = self.input_box1.text
+                        #self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
 
@@ -190,7 +195,6 @@ class pydeathrace:
     # Para dibujar en la pantalla por fotogramas y qeu esta se actualice cada sierto tiempo
     def _draw(self):
         self.pantalla.fill(black)
-
 
         #Vista de la pantalla de inicio
         if self.menu == "menu":
@@ -216,12 +220,13 @@ class pydeathrace:
         elif self.menu == "info":
             self.f_inicio.place()
             self.info_tex.place(True, (0, -390))
+            #self.btn_iformacion.....
+            self.btn_cuadroinfo.place(True, (25 , 0))
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantalla de indicaciones
         elif self.menu == "indica":
             self.f_inicio.place()
-            #self.indica_tex.place(True, (0, -200))
             self.btn_indicaciones.place(True, (0, -290))
             self.btn_atras.place(True, (-590, -320))
 
@@ -246,7 +251,7 @@ class pydeathrace:
         #print("Boton: ", self.btn_play.rect)
 
         print(self.menu)
-        #print(self.nombre2)
+        print(str(self.input_box1))
 
         # update screen
         pygame.display.update()

@@ -163,3 +163,4 @@ class CajaText():
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
         #  Pone el rectangulo.
         pg.draw.rect(screen, self.color, self.rect, 2)
+
