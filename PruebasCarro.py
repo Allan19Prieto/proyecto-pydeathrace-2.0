@@ -16,6 +16,12 @@ class Game:
         pygame.display.set_caption("Prueba Carro")
         self.vidas = 100
 
+        #Para mover un rectangulo
+        self.rectangulo = 100
+        self.x = 950
+        self.y = 150
+
+
         width = 1365
         height = 720
         self.screen = pygame.display.set_mode((width, height))
@@ -101,7 +107,21 @@ class Game:
             self.punto_text.place(True, (600, -280))
 
             #************************Rectangulo******************************
-            pygame.draw.rect(self.screen, white, [400, 490, 50, 50], 0)
+            pygame.draw.rect(self.screen, white, [self.x, self.y, 50, 50], 0)
+            #self.carro.place(True, (self.x, self.y))
+
+            if self.y == 150:
+                self.x -= 10
+            if  self.x == 170:
+                self.y += 10
+            if self.y == 500:
+                self.x += 10
+            if self.x == 1150:
+                self.y -= 10
+
+
+            print("Rectangulo: ", self.x, self.y)
+
 
 
 
