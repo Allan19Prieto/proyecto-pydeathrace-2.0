@@ -163,14 +163,3 @@ class CajaText():
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
         #  Pone el rectangulo.
         pg.draw.rect(screen, self.color, self.rect, 2)
-
-    def place(self, center: bool = False, xy: tuple = (0, 0)):
-        if center:
-            self.rect.center = self.ventana.center
-            self.rect.x += xy[0]
-            self.rect.y += xy[1]
-        else:
-            self.rect.x = xy[0]
-            self.rect.y = xy[1]
-
-        self.pantalla.blit(self.image, self.rect)

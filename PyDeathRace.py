@@ -32,8 +32,9 @@ class pydeathrace:
         #self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
         self.ancho = 1361
         self.alto = 716
-        self.pantalla = pygame.display.set_mode((self.ancho , self.alto ))
+        self.pantalla = pygame.display.set_mode((self.ancho, self.alto ))
         self.window_rect = self.pantalla.get_rect()
+
 
         # Para que el juego se ejecute siempre en unas FPS establecidas
         self.clock = pygame.time.Clock()
@@ -241,7 +242,7 @@ class pydeathrace:
 
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
-        #print(self.mouse_pos[0], self.mouse_pos[1])
+        print(self.mouse_pos[0], self.mouse_pos[1])
         #print("Boton: ", self.btn_play.rect)
 
         print(self.menu)
