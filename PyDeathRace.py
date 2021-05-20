@@ -3,6 +3,8 @@ from Clases import *
 import pygame
 import ctypes
 import os
+import sys
+import pickle
 import Carrera
 from datetime import date
 
@@ -69,6 +71,7 @@ class pydeathrace:
         self.btn_indicaciones = Image("button", "Indicaciones.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_info = Image("button", "Info.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_jugar = Image("button", "Jugar.png", (230, 115), self.pantalla, self.window_rect)
+        self.btn_jugar_pista = Image("button", "jugar.png",(100, 60), self.pantalla, self.window_rect)
         self.btn_menu = Image("button", "Menu.png", (290, 225), self.pantalla, self.window_rect)
         self.btn_nombre = Image("button", "Nombre.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_pausa = Image("button", "Pausa.png", (180, 115), self.pantalla, self.window_rect)
@@ -80,9 +83,18 @@ class pydeathrace:
         self.btn_iformacion = Image("img", "Informacion.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_cuadroinfo = Image("img", "CuadroInfo.png", (580, 515), self.pantalla, self.window_rect)
 
+        #Botones de blechas
+        self.btn_flecha_derecha = Image("img", "right.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_izquierda = Image("img", "left.png", (50, 30), self.pantalla, self.window_rect)
+
 
         # Fondo pantalla
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
+
+        # Carros
+        self.imagenes_carros = []
+        for i in range(1, 16):
+            self.imagenes_carros.append(Image("img", f"car{i}.png", (120, 60), self.pantalla, self.window_rect))
 
         #Pistas
         #self.p_pista1 = Image("img", "Pista1-png.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
@@ -117,6 +129,12 @@ class pydeathrace:
 
         self.input_box1 = CajaText(100, 100, 140, 32)
         self.done = False
+
+
+        #Par alas pantallas en negro
+        self.espera1_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Cargando Sala...")
+        self.espera2_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Espere un momento...")
+        self.tiempo_espera = 0
 
     # Este es el bucle de nuestro juego
     def main_loop(self):
@@ -192,8 +210,13 @@ class pydeathrace:
                 #Eventos del voton jugar
                 if self.btn_jugar.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
                     self.s_click2.play()
-                    Carrera.main(self.pantalla)
-                    self.menu = "menu"
+                    #Carrera.main(self.pantalla)
+                    self.menu = "seleccionar"
+
+                if self.btn_jugar_pista.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
+                    self.s_click3.play()
+                    #Carrera.main(self.pantalla)
+                    self.menu = "CargandoJuego"
 
 
                 #evento boton atras
@@ -201,7 +224,7 @@ class pydeathrace:
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
                         self.s_click3.play()
                         self.menu = "menu"
-                    elif self.menu == "nombre" or self.menu == "puntaje":
+                    elif self.menu == "nombre" or self.menu == "puntaje" or self.menu == "seleccionar":
                         #self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
@@ -270,6 +293,28 @@ class pydeathrace:
             self.btn_puntaje.place(True, (0, -290))
             self.btn_atras.place(True, (-590, -320))
 
+        #Ventana para seleccionar las caracteristicas de la lista
+        elif self.menu == "seleccionar":
+            self.f_inicio.place()
+            self.btn_atras.place(True, (-590, -320))
+            self.btn_jugar_pista.place(True, (590,320))
+
+        #Patntallas Cargando el juego
+        elif self.menu == "CargandoJuego":
+            self.pantalla.fill(darkred)
+            if self.tiempo_espera < 60:
+                self.espera1_text.place(True)
+                self.tiempo_espera += 1
+
+            if self.tiempo_espera >= 60:
+                self.espera2_text.place(True)
+                self.tiempo_espera += 1
+
+            if self.tiempo_espera == 120:
+                #Pasamos a jugar en la pista
+                Carrera.main(self.pantalla)
+                self.menu = "menu"
+
         # Colocamos en mouse en la pantalla
         self.mouse1.altera_cursor()
         print(self.mouse_pos[0], self.mouse_pos[1])
@@ -279,7 +324,6 @@ class pydeathrace:
         print(str(self.input_box1))
 
         # update screen
-
         pygame.display.flip()
-        self.clock.tick(60)
         pygame.display.update()
+        self.clock.tick(60)

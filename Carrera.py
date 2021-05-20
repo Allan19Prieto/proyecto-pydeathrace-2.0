@@ -15,8 +15,6 @@ def main(pantalla):
 
 
     while True:
-
-
         #Parte logica
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (
