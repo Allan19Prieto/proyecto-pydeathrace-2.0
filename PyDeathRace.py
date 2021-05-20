@@ -3,6 +3,8 @@ from Clases import *
 import pygame
 import ctypes
 import os
+import Carrera
+from datetime import date
 
 # Colores
 red = (255, 0, 0)
@@ -38,6 +40,18 @@ class pydeathrace:
 
         # Para que el juego se ejecute siempre en unas FPS establecidas
         self.clock = pygame.time.Clock()
+
+        #Variables para la fecha
+        self.today = date.today()
+        self.font = pygame.font.SysFont("comicsansms", 30)
+        self.smallfont = pygame.font.SysFont("comicsansms", 14)
+        self.slategrey = (112, 128, 144)
+
+        #Obtenemos la fecha del sistema
+        self.todayText = "Fecha:  " + self.today.strftime("%A") + ", " + self.today.strftime(
+            "%B") + " " + self.today.strftime("%d") + \
+                         ", " + self.today.strftime("%Y")
+        self.todayText = self.smallfont.render(self.todayText, True, darkred)
 
         #Variable para el menu
         self.menu = "menu"
@@ -93,7 +107,7 @@ class pydeathrace:
         self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
 
         # Texto
-        self.usuario_nomnre = Text(self.pantalla, self.window_rect, "game_font",30, crimson, " Usuario: " + self.nombre_usuario)
+        self.usuario_nombre = Text(self.pantalla, self.window_rect, "game_font",30, crimson, " Usuario: " + self.nombre_usuario)
         self.inicio_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " PyDeathRace ", crimson)
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", cyan)
         self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " ¿Que desea hacer? ", crimson)
@@ -126,9 +140,12 @@ class pydeathrace:
         self.mouse_pos = pygame.mouse.get_pos()
         self.mousex , self.mousey = pygame.mouse.get_pos()
 
+
         #self.mouse1 = Mouse(self.pantalla, self.event)
         # Texto de puntos
         self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
+
+
 
         for self.event in pygame.event.get():
             if self.event.type == pygame.QUIT or (
@@ -172,10 +189,12 @@ class pydeathrace:
                     self.s_click2.play()
                     self.menu = "puntaje"
 
+                #Eventos del voton jugar
+                if self.btn_jugar.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
+                    self.s_click2.play()
+                    Carrera.main(self.pantalla)
+                    self.menu = "menu"
 
-                #evento del boton salir
-                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
-                    quit()
 
                 #evento boton atras
                 if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
@@ -186,6 +205,10 @@ class pydeathrace:
                         #self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
+
+                        # evento del boton salir
+                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
+                    quit()
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
@@ -199,6 +222,8 @@ class pydeathrace:
         #Vista de la pantalla de inicio
         if self.menu == "menu":
             self.f_inicio.place()
+            self.pantalla.blit(self.todayText, (5, 10))
+            #print(self.todayText)
             self.inicio_text.place(True, (0, -310))
             self.btn_play.place(True, (0, -125))
             self.btn_info.place(True, (0, 55))
@@ -209,7 +234,7 @@ class pydeathrace:
             self.f_inicio.place()
             #self.play_text.place(True, (0, -280))
             self.btn_menu.place(True, (0, -240))
-            self.usuario_nomnre.place(True, (480, -320))
+            self.usuario_nombre.place(True, (480, -320))
             self.btn_nombre.place(True, (-275, -50))
             self.btn_puntaje.place(True, (-275, 150))
             self.btn_jugar.place(True, (275, -50))
@@ -254,6 +279,7 @@ class pydeathrace:
         print(str(self.input_box1))
 
         # update screen
-        pygame.display.update()
+
         pygame.display.flip()
         self.clock.tick(60)
+        pygame.display.update()

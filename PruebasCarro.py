@@ -53,7 +53,7 @@ class Game:
         while not self.exit:
             #time_passed = clock.tick(self.fps)
             #time_passed_seconds = time_passed / 1000.0
-            dt = self.clock.get_time() / 1000
+            dt = self.clock.get_time() / 1000.0
 
 
             # Event queue
