@@ -220,7 +220,7 @@ class pydeathrace:
         elif self.menu == "info":
             self.f_inicio.place()
             self.info_tex.place(True, (0, -390))
-            #self.btn_iformacion.....
+            self.btn_iformacion.place(True, (-5,-300))
             self.btn_cuadroinfo.place(True, (25 , 0))
             self.btn_atras.place(True, (-590, -320))
 

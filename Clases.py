@@ -115,12 +115,14 @@ class Text():
 #Creamos la clase para las cajas de texto
 class CajaText():
 
-    def __init__(self, x, y, w, h, text=''):
+    def __init__(self, x, y, w, h, text = ""):
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
         self.text = text
         self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
+
+
 
     #Cuando se precione el cuandro
     def handle_event(self, event):
