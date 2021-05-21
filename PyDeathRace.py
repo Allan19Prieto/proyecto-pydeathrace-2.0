@@ -303,6 +303,10 @@ class pydeathrace:
                     self.jugadores = "dos"
                     self.Jugadores_seleccionados = 2
 
+                # evento del boton salir
+                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
+                    quit()
+
                 #evento boton atras
                 if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
@@ -312,10 +316,6 @@ class pydeathrace:
                         #self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
-
-                        # evento del boton salir
-                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
-                    quit()
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
