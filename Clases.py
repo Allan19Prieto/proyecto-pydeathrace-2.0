@@ -50,7 +50,6 @@ class Mouse():
         #print(pygame.mouse.get_pos())
         return pygame.mouse.get_pos()
 
-
     def coordenadas_ponteiro(self):
         """ Establece las cordenadas del puntero del mouse"""
 

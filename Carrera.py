@@ -12,8 +12,6 @@ def main(pantalla):
 
     pista = Image("img", "Pista1.jpg", (ancho, alto), pantalla, window_rect)
 
-
-
     while True:
         #Parte logica
         for event in pygame.event.get():
@@ -21,7 +19,6 @@ def main(pantalla):
                     event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 quit()
-
 
         #Parte de dibujo
         pantalla.fill((0, 0, 0))

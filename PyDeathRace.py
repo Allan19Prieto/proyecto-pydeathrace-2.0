@@ -101,6 +101,12 @@ class pydeathrace:
 
         self.btn_multigugador = Image("img", "upgrade_hp.png", (70, 70), self.pantalla, self.window_rect)
 
+        #Titulos
+        self.btn_jugador1 = Image("img", "Jugador1.png", (230, 115), self.pantalla, self.window_rect)
+        self.btn_jugador2 = Image("img", "Jugador2.png", (230, 115), self.pantalla, self.window_rect)
+        self.btn_icono_inicio = Image("img", "Icono.png", (300, 155), self.pantalla, self.window_rect)
+        self.btn_pista_titulo = Image("img", "Pista.png", (230, 115), self.pantalla, self.window_rect)
+
 
         # Fondo pantalla
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
@@ -297,7 +303,6 @@ class pydeathrace:
                     self.jugadores = "dos"
                     self.Jugadores_seleccionados = 2
 
-
                 #evento boton atras
                 if self.btn_atras.rect.collidepoint(self.mouse1.coordenadas_cursor()):
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
@@ -325,7 +330,7 @@ class pydeathrace:
         if self.menu == "menu":
             self.f_inicio.place()
             self.pantalla.blit(self.todayText, (1130, 8))
-            self.inicio_text.place(True, (0, -310))
+            self.btn_icono_inicio.place(True, (0, -280))
             self.btn_play.place(True, (0, -125))
             self.btn_info.place(True, (0, 55))
             self.btn_indicaciones.place(True, (0, 240))
@@ -377,12 +382,15 @@ class pydeathrace:
             self.f_inicio.place()
 
             #Para ver los carros que se quieren jugar
-            self.btn_flecha_derecha.place(xy=(330, 220))
-            self.btn_flecha_izquierda.place(xy=(95, 220))
-            self.imagenes_carros[self.contador_carros].place(xy=(180, 205))
+            self.btn_flecha_derecha.place(xy=(390, 240))
+            self.btn_flecha_izquierda.place(xy=(155, 240))
+            self.imagenes_carros[self.contador_carros].place(xy=(245, 225))
+            self.btn_jugador1.place(xy=(200, 85))
+            self.btn_jugador2.place(xy=(200, 450))
+            self.btn_pista_titulo.place(xy=(870, 60))
 
             #Para ver las pistas en la paantalla
-            self.btn_flecha_derecha2.place(xy=(1120 , 220))
+            self.btn_flecha_derecha2.place(xy=(1120, 220))
             self.btn_flecha_izquierda2.place(xy=(790, 220))
             self.imagenes_pistas[self.contador_pistas].place(xy=(880, 205))
 
@@ -390,12 +398,12 @@ class pydeathrace:
 
             if self.jugadores == "dos":
                 # Para ver los carros que se quieren jugar
-                self.btn_flecha_derecha3.place(xy=(330, 520))
-                self.btn_flecha_izquierda3.place(xy=(95, 520))
-                self.imagenes_carros2[self.contador_carros2].place(xy=(180, 502))
+                self.btn_flecha_derecha3.place(xy=(390, 590))
+                self.btn_flecha_izquierda3.place(xy=(155, 590))
+                self.imagenes_carros2[self.contador_carros2].place(xy=(245, 575))
 
             self.btn_atras.place(True, (-590, -320))
-            self.btn_jugar_pista.place(True, (590,320))
+            self.btn_jugar_pista.place(True, (590, 320))
 
         #Patntallas Cargando el juego
         elif self.menu == "CargandoJuego":
