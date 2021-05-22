@@ -1,4 +1,7 @@
 
+#region Importadas
+import csv
+
 from Clases import *
 import pygame
 import ctypes
@@ -8,7 +11,11 @@ import pickle
 import Carrera
 from datetime import date
 
-# Colores
+import tkinter as tk
+from tkinter import ttk
+#endregion
+
+#region Colores
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
@@ -25,12 +32,18 @@ darkkahaki = (189, 183, 107)
 darkorange = (255, 140, 0)
 darkred = (139, 0, 0)
 crimson = (220, 20, 60)
+#endregion
+
+font = pygame.font.SysFont("comicsansms", 30)
+nameActive = False
+regionsActive = False
+slategrey = (112, 128, 144)
 
 class pydeathrace:
     def __init__(self):
         self._init_pygame()
 
-        # Nos permite obtener el tamaño de la pantalla completa
+        #region Datos de pantalla y datos del sistema
         user32 = ctypes.windll.user32
         user32.SetProcessDPIAware()
         #self.ancho, self.alto = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -38,10 +51,6 @@ class pydeathrace:
         self.alto = 716
         self.pantalla = pygame.display.set_mode((self.ancho, self.alto ))
         self.window_rect = self.pantalla.get_rect()
-
-
-        # Para que el juego se ejecute siempre en unas FPS establecidas
-        self.clock = pygame.time.Clock()
 
         #Variables para la fecha
         self.today = date.today()
@@ -54,25 +63,33 @@ class pydeathrace:
             "%B") + " " + self.today.strftime("%d") + \
                          ", " + self.today.strftime("%Y")
         self.todayText = self.smallfont.render(self.todayText, True, darkred)
+        #endregion
 
+        # Para que el juego se ejecute siempre en unas FPS establecidas
+        self.clock = pygame.time.Clock()
+
+        #region Variables
         #Variable para el menu
         self.menu = "menu"
         self.jugadores = "uno"
 
         #Variables para la pantalla
-        self.Carro1_seleccionado = None
+        self.Carro1_seleccionado = 0
         self.Carro2_seleccionado = None
         self.Pista_seleccionada = None
         self.Jugadores_seleccionados = 1
 
         #Nombre de usuarios
-        self.nombre_usuario = "#"
+        self.nombre_usuario = ""
+        self.nombre_usuario2 = ""
+        self.nombre_usuario_1 = ""
+        self.nombre_usuario_2 = ""
 
-        #Ejemplo para los puntos
-        self.puntos = 0
-        #self.p = puntos
+        self.newUserName = ""
+        self.userName = ""
+        #endregion
 
-        #Botones
+        #region Botones
         self.btn_atras = Image("button", "Atras.png", (90, 56), self.pantalla, self.window_rect)
         self.btn_guardar = Image("button", "Guardar.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_indicaciones = Image("button", "Indicaciones.png", (230, 115), self.pantalla, self.window_rect)
@@ -106,8 +123,9 @@ class pydeathrace:
         self.btn_jugador2 = Image("img", "Jugador2.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_icono_inicio = Image("img", "Icono.png", (300, 155), self.pantalla, self.window_rect)
         self.btn_pista_titulo = Image("img", "Pista.png", (230, 115), self.pantalla, self.window_rect)
+        #endregion
 
-
+        #region Listas
         # Fondo pantalla
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
@@ -128,8 +146,9 @@ class pydeathrace:
         for i in range(1, 4):
             self.imagenes_pistas.append(Image("img", f"pista{i}.jpg", (200, 150), self.pantalla, self.window_rect))
         self.contador_pistas = 0
+        #endregion
 
-        # Sound
+        #region Sound
         #self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
         self.s_click = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))
         self.s_click1 = pygame.mixer.Sound(os.path.join("sounds", "click1.wav"))
@@ -145,24 +164,69 @@ class pydeathrace:
         self.s_warning = pygame.mixer.Sound(os.path.join("sounds", "warning.wav"))
         self.s_win = pygame.mixer.Sound(os.path.join("sounds", "win.wav"))
         self.s_winrace = pygame.mixer.Sound(os.path.join("sounds", "winrace.wav"))
+        #endregion
 
-        # Texto
-        self.usuario_nombre = Text(self.pantalla, self.window_rect, "game_font",30, crimson, " Usuario: " + self.nombre_usuario)
+        #region Texto
         self.inicio_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " PyDeathRace ", crimson)
         self.title_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, "Menu Principal", cyan)
         self.play_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " ¿Que desea hacer? ", crimson)
         self.info_tex = Text(self.pantalla, self.window_rect, "game_font", 60, white, " Info ", darkslategray)
         self.indica_text = Text(self.pantalla, self.window_rect, "game_font", 60, white, " indicaciones ", darkred)
         self.titulo_nombre_text = Text(self.pantalla, self.window_rect, "game_font", 50, white, " Ingrese su nombre de usuario, por favor ", darkred)
+        #endregion
+
+        self.puntuacionAlta = 0
+
+        #Creamos un acaja de texto con TKINTER
+        #self.entry = ttk.Entry(self.pantalla)
+        # Create the text box
+        self.userNameSurface = font.render(self.newUserName, True, white)
+        # Create the border around the text box with .Rect
+        # left, top, width, height
+        self.userNameBorder = pygame.Rect(((self.ancho - self.userNameSurface.get_width()) / 2) - 10, self.alto * .20,
+                                          self.userNameSurface.get_width() + 10, 50)
 
         self.input_box1 = CajaText(100, 100, 140, 32)
+        self.input_box2 = CajaText(100, 100, 140, 32)
         self.done = False
 
-
-        #Par alas pantallas en espera
+        #region Par alas pantallas en espera
         self.espera1_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Cargando Sala...")
         self.espera2_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Espere un momento...")
         self.tiempo_espera = 0
+        #endregion
+
+    # funcion para guardar las puntuaciones de los jugadores
+    def SaveScores(self, sc, hs, user):
+        self.user = user
+        self.sc = sc
+        self.hs = hs
+        self.lista = []
+        with open("puntajesJugadores.csv", newline='') as File:
+            reader = csv.reader(File)
+            self.lista.append([self.user, self.hs, self.sc])
+            for row in reader:
+                if len(row) > 0:
+                    if self.user != row[0]:
+                        self.lista.append(row)
+        writer = csv.writer(open('puntajesJugadores.csv', 'w'), delimiter=",")
+        writer.writerows(self.lista)
+
+    # funcion para cargar el puntajes más altos de los jugadores
+    def LoadScores(self, user):
+        self.user = user
+        with open("puntajesJugadores.csv", newline='') as File:
+            reader = csv.reader(File)
+            for row in reader:
+                if len(row) > 0:
+                    if self.user == row[0]:
+                        self.puntuacionAlta = int(row[1])
+                        self.puntos = int(row[2])
+                        if 1 == 1:
+                            self.puntos = 0
+                        else:
+                            self.puntos = int(row[2])
+                            # clase para la nave defensora
 
     # Este es el bucle de nuestro juego
     def main_loop(self):
@@ -186,23 +250,17 @@ class pydeathrace:
         self.mouse_pos = pygame.mouse.get_pos()
         self.mousex , self.mousey = pygame.mouse.get_pos()
 
-
-        #self.mouse1 = Mouse(self.pantalla, self.event)
-        # Texto de puntos
-        self.texto_puntos = Text(self.pantalla, self.window_rect, "game_font", 60, green, str(self.puntos))
-
-
-
         for self.event in pygame.event.get():
             if self.event.type == pygame.QUIT or (
                     self.event.type == pygame.KEYDOWN and self.event.key == pygame.K_ESCAPE
             ):
                 quit()
 
+            #Para las cajas de texto
             self.input_box1.handle_event(self.event)
-            self.input_box1.update()
-            self.nombre_usuario = self.input_box1.text
-            #self.nombre2 = str(self.input_box1.text)
+            self.input_box2.handle_event(self.event)
+            self.nombre_usuario1 = self.input_box1.text
+            self.nombre_usuario2 = self.input_box2.text
 
             # Aqui Añadiremos la logica que va a tener el juego
             if self.event.type == pygame.MOUSEBUTTONDOWN:
@@ -215,7 +273,6 @@ class pydeathrace:
                 #Evento del boton info
                 if self.btn_info.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "menu":
                     self.s_click2.play()
-                    self.puntos += 1
                     self.menu = "info"
 
                 #Evento del boton indicaciones
@@ -235,7 +292,7 @@ class pydeathrace:
                     self.s_click2.play()
                     self.menu = "puntaje"
 
-                #Eventos del voton jugar
+                #Eventos del boton jugar
                 if self.btn_jugar.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
                     self.s_click2.play()
                     #Carrera.main(self.pantalla)
@@ -298,6 +355,7 @@ class pydeathrace:
                 #Boton para ingresar un jugador mas a la partida
                 if self.btn_multigugador.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click1.play()
+                    #self.LoadScores("allan")
                     if self.jugadores == "uno":
                         self.jugadores = "dos"
                         self.Jugadores_seleccionados = 2
@@ -320,7 +378,15 @@ class pydeathrace:
                         self.menu = "play"
                     elif self.menu == "nombre":
                         self.s_click3.play()
+                        if self.nombre_usuario1 != "":
+                            self.nombre_usuario_1 = self.nombre_usuario1
+                        if self.nombre_usuario2 != "" and self.Jugadores_seleccionados == 2:
+                            self.nombre_usuario_2 = self.nombre_usuario2
                         self.menu = "seleccionar"
+
+                        #Guardar nombre de usuario
+                        self.SaveScores(self.nombre_usuario_1, self.Carro1_seleccionado, self.Pista_seleccionada)
+
 
 
     # Par amanejar la logica del juego
@@ -345,7 +411,6 @@ class pydeathrace:
         elif self.menu == "play":
             self.f_inicio.place()
             self.pantalla.blit(self.todayText, (1130, 8))
-            self.usuario_nombre.place(True, (480, -290))
             self.btn_menu.place(True, (0, -240))
             self.btn_puntaje.place(True, (275, 0))
             self.btn_jugar.place(True, (-275, 0))
@@ -364,14 +429,20 @@ class pydeathrace:
         elif self.menu == "indica":
             self.f_inicio.place()
             self.btn_indicaciones.place(True, (0, -290))
+            #self.entry.place(x=50, y=50)
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantalla nombre
         elif self.menu == "nombre":
             self.f_inicio.place()
-            self.input_box1.draw(self.pantalla, self.window_rect, True, (0, 0))
-            self.btn_nombre.place(True, (0, -290))
-            self.titulo_nombre_text.place(True, (0, -150))
+            self.btn_nombre1 = Image("button", "Nombre1.png", (230, 115), self.pantalla, self.window_rect)
+            self.btn_nombre2 = Image("button", "Nombre2.png", (230, 115), self.pantalla, self.window_rect)
+            self.input_box1.draw(self.pantalla, self.window_rect, True, (-400, 20))
+            self.input_box2.draw(self.pantalla, self.window_rect, True, (400, 20))
+            self.btn_nombre.place(True, (-0, -290))
+            #self.titulo_nombre_text.place(True, (0, -150))
+            self.btn_nombre1.place(True, (-400, -130))
+            self.btn_nombre2.place(True, (400, -130))
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantalla puntaje
@@ -391,6 +462,10 @@ class pydeathrace:
             self.btn_flecha_izquierda.place(xy=(155, 240))
             self.imagenes_carros[self.contador_carros].place(xy=(245, 225))
 
+            self.usuario_nombre = Text(self.pantalla, self.window_rect, "game_font", 30, crimson,
+                                       " Usuario: " + self.nombre_usuario_1 + " / ")
+            self.usuario_nombre.place(xy=(570, 225))
+
             self.btn_jugador1.place(xy=(200, 85))
             self.btn_nombre.place(xy=(570, 85))
             self.btn_pista_titulo.place(xy=(970, 85))
@@ -408,6 +483,10 @@ class pydeathrace:
                 self.btn_flecha_derecha3.place(xy=(390, 610))
                 self.btn_flecha_izquierda3.place(xy=(155, 610))
                 self.imagenes_carros2[self.contador_carros2].place(xy=(245, 595))
+
+                self.usuario_nombre2 = Text(self.pantalla, self.window_rect, "game_font", 30, crimson,
+                                           " Usuario: " + self.nombre_usuario_2)
+                self.usuario_nombre2.place(xy=(570, 595))
 
             self.btn_atras.place(True, (-590, -320))
             self.btn_jugar_pista.place(True, (590, 320))
@@ -440,8 +519,11 @@ class pydeathrace:
         print("Carro2: ", self.Carro2_seleccionado)
         print("Pista: ", self.Pista_seleccionada)
         print("jugadores: ", self.Jugadores_seleccionados)
+        print("Nombre: ", self.nombre_usuario_1)
+        print("Nombre2: ", self.nombre_usuario_2)
 
         # update screen
+        self.input_box1.update()
         pygame.display.flip()
         pygame.display.update()
         self.clock.tick(60)

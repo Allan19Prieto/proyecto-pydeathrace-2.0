@@ -1,3 +1,5 @@
+import csv
+
 from pygame.image import load
 
 import os
@@ -48,4 +50,5 @@ def cargar_imagem(arquivo, transparencia=None, imagens=None):
                 img.set_colorkey(colorkey, RLEACCEL)
             imgs.append(img)
         return imgs
+
 

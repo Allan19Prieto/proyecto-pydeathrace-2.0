@@ -260,7 +260,6 @@ def new_game():
         pygame.display.update()
         clock.tick(15)
 
-
 def load_screen():
     # Declare Variables
     SAVE_DATA = shelve.open("Save Data")
