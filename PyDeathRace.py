@@ -304,7 +304,7 @@ class pydeathrace:
                     self.Jugadores_seleccionados = 2
 
                 # evento del boton salir
-                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()):
+                if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
                     quit()
 
                 #evento boton atras
