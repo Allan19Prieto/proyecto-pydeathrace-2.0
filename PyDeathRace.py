@@ -92,12 +92,12 @@ class pydeathrace:
         self.btn_cuadroinfo = Image("img", "CuadroInfo.png", (580, 515), self.pantalla, self.window_rect)
 
         #Botones de blechas
-        self.btn_flecha_derecha = Image("img", "right.png", (50, 30), self.pantalla, self.window_rect)
-        self.btn_flecha_izquierda = Image("img", "left.png", (50, 30), self.pantalla, self.window_rect)
-        self.btn_flecha_derecha2 = Image("img", "right.png", (50, 30), self.pantalla, self.window_rect)
-        self.btn_flecha_izquierda2 = Image("img", "left.png", (50, 30), self.pantalla, self.window_rect)
-        self.btn_flecha_derecha3 = Image("img", "right.png", (50, 30), self.pantalla, self.window_rect)
-        self.btn_flecha_izquierda3 = Image("img", "left.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_derecha = Image("button", "Seleccion.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_izquierda = Image("button", "Atras.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_derecha2 = Image("button", "Seleccion.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_izquierda2 = Image("button", "Atras.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_derecha3 = Image("button", "Seleccion.png", (50, 30), self.pantalla, self.window_rect)
+        self.btn_flecha_izquierda3 = Image("button", "Atras.png", (50, 30), self.pantalla, self.window_rect)
 
         self.btn_multigugador = Image("img", "upgrade_hp.png", (70, 70), self.pantalla, self.window_rect)
 
@@ -111,26 +111,23 @@ class pydeathrace:
         # Fondo pantalla
         self.f_inicio = Image("img", "FondoPrincipal.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
-        # Carros
+        # Carros en una lista
         self.imagenes_carros = []
         for i in range(1, 16):
-            self.imagenes_carros.append(Image("img", f"car{i}.png", (120, 60), self.pantalla, self.window_rect))
+            self.imagenes_carros.append(Image("img", f"car{i}.png", (125, 65), self.pantalla, self.window_rect))
         self.contador_carros = 0
 
-        # Carros2
+        # Carros2 en una lista
         self.imagenes_carros2 = []
         for i in range(1, 16):
-            self.imagenes_carros2.append(Image("img", f"car{i}.png", (120, 60), self.pantalla, self.window_rect))
+            self.imagenes_carros2.append(Image("img", f"car{i}.png", (125, 65), self.pantalla, self.window_rect))
         self.contador_carros2 = 0
 
-        #Pistas
+        #Pistas en una lista
         self.imagenes_pistas = []
         for i in range(1, 4):
             self.imagenes_pistas.append(Image("img", f"pista{i}.jpg", (200, 150), self.pantalla, self.window_rect))
         self.contador_pistas = 0
-        #self.p_pista1 = Image("img", "Pista1-png.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
-        #self.p_pista2 = Image("img", "Pista2.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
-        #self.p_pista3 = Image("img", "Pista3.png", (self.ancho, self.alto), self.pantalla, self.window_rect)
 
         # Sound
         #self.s_battlefield = pygame.mixer.Sound(os.path.join("sounds", "Battlefield.mp3"))
@@ -162,7 +159,7 @@ class pydeathrace:
         self.done = False
 
 
-        #Par alas pantallas en negro
+        #Par alas pantallas en espera
         self.espera1_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Cargando Sala...")
         self.espera2_text = Text(self.pantalla, self.window_rect, "game_font", 35, white, "Espere un momento...")
         self.tiempo_espera = 0
@@ -229,7 +226,7 @@ class pydeathrace:
                 #***********************************************************************************************************
                 #Eventos dentro del menu principal
                 #Nombre
-                if self.btn_nombre.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
+                if self.btn_nombre.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click2.play()
                     self.menu = "nombre"
 
@@ -250,7 +247,7 @@ class pydeathrace:
                     #Carrera.main(self.pantalla)
                     self.menu = "CargandoJuego"
 
-                #Eventos en la pantalla seleccionar #########################################################################
+                #Eventos en la pantalla seleccionar ####################
                 if self.btn_flecha_derecha.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click.play()
                     if self.contador_carros == 14:
@@ -266,7 +263,7 @@ class pydeathrace:
                         self.contador_carros -= 1
                     self.Carro1_seleccionado = self.contador_carros
 
-                #Eventos para las pistas ··##################################################################################
+                #Eventos para las pistas ··##################
                 if self.btn_flecha_derecha2.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click.play()
                     if self.contador_pistas == 2:
@@ -282,26 +279,31 @@ class pydeathrace:
                         self.contador_pistas -= 1
                     self.Pista_seleccionada = self.contador_pistas
 
-                    # Eventos Para el segundo jugador #########################################################################
-                    if self.btn_flecha_derecha3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
-                        self.s_click.play()
-                        if self.contador_carros2 == 14:
-                            self.contador_carros2 = 0
-                        else:
-                            self.contador_carros2 += 1
-                        self.Carro2_seleccionado = self.contador_carros2
-                    if self.btn_flecha_izquierda3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
-                        self.s_click.play()
-                        if self.contador_carros2 == 0:
-                            self.contador_carros2 = 14
-                        else:
-                            self.contador_carros2 -= 1
-                        self.Carro2_seleccionado = self.contador_carros2
+                # Eventos Para el segundo jugador ###############
+                if self.btn_flecha_derecha3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
+                    self.s_click.play()
+                    if self.contador_carros2 == 14:
+                        self.contador_carros2 = 0
+                    else:
+                        self.contador_carros2 += 1
+                    self.Carro2_seleccionado = self.contador_carros2
+                if self.btn_flecha_izquierda3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
+                    self.s_click.play()
+                    if self.contador_carros2 == 0:
+                        self.contador_carros2 = 14
+                    else:
+                        self.contador_carros2 -= 1
+                    self.Carro2_seleccionado = self.contador_carros2
 
+                #Boton para ingresar un jugador mas a la partida
                 if self.btn_multigugador.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click1.play()
-                    self.jugadores = "dos"
-                    self.Jugadores_seleccionados = 2
+                    if self.jugadores == "uno":
+                        self.jugadores = "dos"
+                        self.Jugadores_seleccionados = 2
+                    elif self.jugadores == "dos":
+                        self.jugadores = "uno"
+                        self.Jugadores_seleccionados = 1
 
                 # evento del boton salir
                 if self.btn_salir.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "play":
@@ -312,10 +314,14 @@ class pydeathrace:
                     if self.menu == "play" or self.menu == "info" or self.menu == "indica":
                         self.s_click3.play()
                         self.menu = "menu"
-                    elif self.menu == "nombre" or self.menu == "puntaje" or self.menu == "seleccionar":
+                    elif self.menu == "puntaje" or self.menu == "seleccionar":
                         #self.nombre_usuario = self.input_box1.text
                         self.s_click3.play()
                         self.menu = "play"
+                    elif self.menu == "nombre":
+                        self.s_click3.play()
+                        self.menu = "seleccionar"
+
 
     # Par amanejar la logica del juego
     def _process_game_logic(self):
@@ -341,10 +347,9 @@ class pydeathrace:
             self.pantalla.blit(self.todayText, (1130, 8))
             self.usuario_nombre.place(True, (480, -290))
             self.btn_menu.place(True, (0, -240))
-            self.btn_nombre.place(True, (-275, -50))
-            self.btn_puntaje.place(True, (-275, 150))
-            self.btn_jugar.place(True, (275, -50))
-            self.btn_salir.place(True, (275, 150))
+            self.btn_puntaje.place(True, (275, 0))
+            self.btn_jugar.place(True, (-275, 0))
+            self.btn_salir.place(True, (0, 200))
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantala de informacion
@@ -385,22 +390,24 @@ class pydeathrace:
             self.btn_flecha_derecha.place(xy=(390, 240))
             self.btn_flecha_izquierda.place(xy=(155, 240))
             self.imagenes_carros[self.contador_carros].place(xy=(245, 225))
+
             self.btn_jugador1.place(xy=(200, 85))
-            self.btn_jugador2.place(xy=(200, 450))
-            self.btn_pista_titulo.place(xy=(870, 60))
+            self.btn_nombre.place(xy=(570, 85))
+            self.btn_pista_titulo.place(xy=(970, 85))
 
             #Para ver las pistas en la paantalla
-            self.btn_flecha_derecha2.place(xy=(1120, 220))
-            self.btn_flecha_izquierda2.place(xy=(790, 220))
-            self.imagenes_pistas[self.contador_pistas].place(xy=(880, 205))
+            self.btn_flecha_derecha2.place(xy=(1210, 350))
+            self.btn_flecha_izquierda2.place(xy=(900, 350))
+            self.imagenes_pistas[self.contador_pistas].place(xy=(980, 305))
 
             self.btn_multigugador.place(True, (-450, 0))
 
             if self.jugadores == "dos":
                 # Para ver los carros que se quieren jugar
-                self.btn_flecha_derecha3.place(xy=(390, 590))
-                self.btn_flecha_izquierda3.place(xy=(155, 590))
-                self.imagenes_carros2[self.contador_carros2].place(xy=(245, 575))
+                self.btn_jugador2.place(xy=(200, 450))
+                self.btn_flecha_derecha3.place(xy=(390, 610))
+                self.btn_flecha_izquierda3.place(xy=(155, 610))
+                self.imagenes_carros2[self.contador_carros2].place(xy=(245, 595))
 
             self.btn_atras.place(True, (-590, -320))
             self.btn_jugar_pista.place(True, (590, 320))
@@ -409,15 +416,15 @@ class pydeathrace:
         elif self.menu == "CargandoJuego":
 
             self.pantalla.fill(darkred)
-            if self.tiempo_espera < 60:
+            if self.tiempo_espera < 90:
                 self.espera1_text.place(True)
                 self.tiempo_espera += 1
 
-            if self.tiempo_espera >= 60:
+            if self.tiempo_espera >= 90:
                 self.espera2_text.place(True)
                 self.tiempo_espera += 1
 
-            if self.tiempo_espera == 120:
+            if self.tiempo_espera == 170:
                 #Pasamos a jugar en la pista
                 Carrera.main(self.pantalla)
                 self.menu = "menu"
@@ -430,7 +437,9 @@ class pydeathrace:
         #print(self.menu)
         #print(str(self.input_box1))
         print("Carro: ", self.Carro1_seleccionado)
+        print("Carro2: ", self.Carro2_seleccionado)
         print("Pista: ", self.Pista_seleccionada)
+        print("jugadores: ", self.Jugadores_seleccionados)
 
         # update screen
         pygame.display.flip()
