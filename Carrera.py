@@ -12,6 +12,8 @@ def main(pantalla):
 
     pista = Image("img", "Pista1.jpg", (ancho, alto), pantalla, window_rect)
 
+    pygame.init()
+
     while True:
         #Parte logica
         for event in pygame.event.get():
