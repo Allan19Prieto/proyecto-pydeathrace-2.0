@@ -33,13 +33,14 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
     amarillo = (255, 240, 1, 255)
     rojo = (254, 0, 0, 255)
     meta = (237, 238, 240, 255)
+    darkred = (139, 0, 0)
 
-    #Función para escribir en la pantalla los objetos
+    #Funcion para escribir en la pantalla los objetos
     def escribe_en_pantalla(texto, color, tamanho, posicion):
         fuente = pygame.font.Font(None, tamanho)
         pantalla.blit(fuente.render(texto,  3, color), posicion)
 
-    #Función para mapear la tecla que ha sido precionada
+    #Funcion para mapear la tecla que ha sido precionada
     def tecla(tecla, player):
         tecla_map = {'acelera': [K_UP, K_w], 'freno': [K_DOWN, K_s],\
                      'izquierda': [K_LEFT, K_a], 'derecha': [K_RIGHT, K_d]}
@@ -48,44 +49,43 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         return tecla_map[tecla][1]
 
     class Display():
-        #Las variables que se utilizarán durante el juego
+        #Las variables que se utilizaran durante el juego
         def __init__(self, player):
             self.tamano_letra = 25
             self.numero_vueltas = 0
 
             if player == 1:
                 self.name = jugador1
-                #self.carro_player = carrop1
-                self.pos_name = (5, 5)
-                self.pos_speed = (5, 65)
-                self.pos_laps = (5, 85)
-                self.pos_life = (5, 45)
-                self.pos_ultima_volta = (5, 105)
-                self.pos_melhor_volta = (5, 125)
+                self.carro_player = carrop1
+                self.posicion_nombre = (5, 5)
+                self.posicion_velocidad = (5, 65)
+                self.posicion_vueltas = (5, 85)
+                self.posicion_vidas = (5, 45)
+                self.posicion_puntos = (5, 105)
+
             else:
                 self.name = jugador2
                 #self.carro_player = carrop2
-                self.pos_name = (5, 625)
-                self.pos_speed = (5, 685)
-                self.pos_laps = (5, 705)
-                self.pos_life = (5, 665)
-                self.pos_ultima_volta = (5, 725)
-                self.pos_melhor_volta = (5, 745)
+                self.posicion_nombre = (5, 625)
+                self.posicion_velocidad = (5, 685)
+                self.posicion_vueltas = (5, 705)
+                self.posicion_vidas = (5, 665)
+                self.posicion_puntos = (5, 725)
 
-        #Para mostrar la información que tendra el jugador
+
+        #Par amostrar la informacion que tendra el jugador
         def exibe_display(self):
-            vida = 'Vida: ' + str(500)
-            velocidade = 'Velocidade: ' + str(0 / 5)
+            vida = 'Vida: ' + str(self.carro_player.life)
+            velocidade = 'Velocidade: ' + str(self.carro_player.velocidade_carro / 5)
             voltas = 'Vueltas: ' + str(0+1) + '/' + str(self.numero_vueltas)
-            ultima_volta = 'Ultima Volta: ' + str("-")
-            melhor_volta = 'Melhor Volta: ' + str("-")
+            puntos = 'Puntos: ' + str(0+1) +  '/' + str(self.carro_player.puntos)
 
-            escribe_en_pantalla(self.name, blanco, self.tamano_letra, self.pos_name)
-            escribe_en_pantalla(vida, blanco, self.tamano_letra, self.pos_life)
-            escribe_en_pantalla(velocidade, blanco, self.tamano_letra, self.pos_speed)
-            escribe_en_pantalla(voltas, blanco, self.tamano_letra, self.pos_laps)
-            escribe_en_pantalla(ultima_volta, blanco, self.tamano_letra, self.pos_ultima_volta)
-            escribe_en_pantalla(melhor_volta, blanco, self.tamano_letra, self.pos_melhor_volta)
+
+            escribe_en_pantalla(self.name, darkred, self.tamano_letra, self.posicion_nombre)
+            escribe_en_pantalla(vida, darkred, self.tamano_letra, self.posicion_vidas)
+            escribe_en_pantalla(velocidade, darkred, self.tamano_letra, self.posicion_velocidad)
+            escribe_en_pantalla(voltas, darkred, self.tamano_letra, self.posicion_vueltas)
+            escribe_en_pantalla(puntos, darkred, self.tamano_letra, self.posicion_puntos)
 
     class Pista():
         def __init__(self, pista):
@@ -94,30 +94,27 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.imgpista_colores = funciones.cargar_imagem('pista-' + str(pista) + '.jpg')
             self.num_voltas = 1
 
-            # Largada
+            # largada
             self.tempo_largada = 0
             self.largada = False
-            self.tamano_letras = 100
+            self.tamano_letras = 200
             if num_pista == 1:
-                self.posicaop1 = Vector(565, 135)
-                self.posicaop2 = Vector(465, 165)
-                self.rotacao = 90.
+                self.posicaop1 = Vector(850, 200)
+                self.posicaop2 = Vector(830, 200)
+                self.rotacao = 180.
             elif num_pista == 2:
-                self.posicaop1 = Vector(565, 630)
-                self.posicaop2 = Vector(465, 670)
-                self.rotacao = 90.
+                self.posicaop1 = Vector(800, 630)
+                self.posicaop2 = Vector(7850, 670)
+                self.rotacao = 180.
             elif num_pista == 3:
-                self.posicaop1 = Vector(565, 630)
-                self.posicaop2 = Vector(465, 670)
-                self.rotacao = 90.
-
-            # arvores
-            #self.arvores = funciones.cargar_imagem('pista_arvores' + str(pista) + '.png', 1)
+                self.posicaop1 = Vector(900, 50)
+                self.posicaop2 = Vector(885, 50)
+                self.rotacao = 180.
 
         def conta_tempo_largada(self, tf, ti, numero):
             """ o nome já diz tudo """
             if tf > self.tempo_largada >= ti:
-                escribe_en_pantalla(numero, blanco, self.tamano_letras, (500, 334))
+                escribe_en_pantalla(numero, darkred, self.tamano_letras, (500, 334))
 
         def larga(self):
             """ exibe na tela a mensagem de largada e permite a movimentação dos carros (self.largada) """
@@ -128,11 +125,11 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.conta_tempo_largada(fps * i + fps, fps * i, "%d" % (6 - i))
 
             if fps * 7 > self.tempo_largada >= fps * 6:
-                escribe_en_pantalla('BUENA SUERTE!!', blanco, self.tamano_letras, (200, 334))
+                escribe_en_pantalla('GO!', darkred, self.tamano_letras, (500, 334))
                 self.largada = True
 
-        def carrega_mapa_cores(self):
-            """ carrega o mapa de cores da pista responsável pelo controle de colisões de obstáculos """
+        #Se cargan las imagenes de los colores
+        def pistas_colores(self):
             pantalla.blit(self.imgpista_colores, (0, 0))
 
         def carrega_pista(self):
@@ -148,43 +145,43 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.acelerador, self.freio = tecla('acelera', player), tecla('freno', player)
             self.esquerda, self.direita = tecla('izquierda', player), tecla('derecha', player)
 
-            # color de carro
-            self.cor = cor
-            self.imgscar = funciones.cargar_imagem(f"car1.png",1)
+            # cor do carro
+            self.imgscar = funciones.cargar_imagem(f"car{cor}.png",1)
             self.imgcar = self.imgscar
 
-            # velocidades/dislocamiento/aceleración
+            # velocidade/deslocamento/acelera
             self.velocidade_carro = 0
             self.velocidade_max = 200.
             self.rotacao = pista.rotacao
-            self.velocidade_rotacao = 90.
+            self.velocidade_rotacao = 90.  # graus por segundo
 
-            # Posición inicial de los carros en la pista antes de la partida
+            # posicao inicial dos carros na pista e antes de uma batida
             if player == 1:
                 self.posicao = pista.posicaop1
             else:
                 self.posicao = pista.posicaop2
             self.pos_antes_batida = self.posicao.copy()
 
-            # Vueltas
+            # conta voltas
             self.checks = 0
             self.voltas = 0
             self.melhor_volta = "-"
             self.ultima_volta = "-"
             self.cronometro = pygame.time.Clock()
 
-            # Vida
+            # life
             self.life = 100
             self.somexplosao = pygame.mixer.Sound('sounds/explode.wav')
             self.imgsexplosao = funciones.cargar_imagem('explosion.png', 1, [(x, 0, 50, 50) for x in range(0, 400, 50)])
             self.imgexplosao = self.imgsexplosao[0]
             self.explode = False
             self.conta_tempo_morte = fps * 5
+            self.puntos = 0
 
             #Sonidos
             self.acelerasn = pygame.mixer.Sound('sounds/aceleracion_1.wav')
 
-            # Rectángulo del sprite
+            # retangulo do sprite
             self.rect = Rect(self.posicao.x - self.imgcar.get_width() / 2,
                              self.posicao.y - self.imgcar.get_height() / 2, \
                              self.imgcar.get_width(), self.imgcar.get_height())
@@ -307,7 +304,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.velocidade_carro+= 35
 
         def rotaciona_carro(self, pressed_key):
-            #Para el movimiento del carro
+            #Par ael movimiento del carro
             self.direcao_rotacao = 0.
 
             if self.velocidade_carro != 0:
@@ -349,7 +346,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                               self.imgcar.get_height()/2, self.imgcar.get_width(), self.imgcar.get_height())
 
         def completa_volta(self, pista):
-            #Verifica un vuelta
+            #Verifica un avuelta
             if pista.imgmapa_cores.get_at((int(self.posicao.x), int(self.posicao.y))) in [meta]:
 
                 self.ultima_volta_mil = self.cronometro.tick(fps)
@@ -364,7 +361,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.voltas += 1
                 self.checks = 0
                 #Esta sera la de los puntos
-                self.municao += 5
+                self.puntos += 10
                 if self.voltas == pista.num_voltas:
                     return True
 
@@ -459,7 +456,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
     #pygame.mixer.music.play(-1)
 
     pista = Pista(num_pista)
-    carrop1 = Carro(1, jugador1)
+    carrop1 = Carro(1, carro1)
     displayp1 = Display(1)
     grupo1 = pygame.sprite.GroupSingle(carrop1)
 
@@ -479,20 +476,20 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         pygame.display.update()
 
 
-        #Parte lógica
+        #Parte logica
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (
                     event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 quit()
 
-        #Región datos para el cronómetro
+        #region Datos para el cronometro
         #Parte de dibujo
 
         pressed_key = pygame.key.get_pressed()
 
         #Ver las pistas
-        pista.carrega_mapa_cores()
+        pista.pistas_colores()
         pista.carrega_pista()
 
         carrop1.acoes(grupo1)
