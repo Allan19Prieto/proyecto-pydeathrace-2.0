@@ -39,9 +39,9 @@ class Mouse():
         cursor = self.imgens_cursor[0]
 
         if self.event.type == MOUSEBUTTONDOWN:
-            #Se usa la imagen que esta en la posicion 1 del arreglo
+            #Se usa la imagen que esta en la posición 1 del arreglo
             cursor = self.imgens_cursor[1]
-            #Par aque suene al hacer Click
+            #Para que suene al hacer click
             #click1.play()
         return cursor
 
@@ -71,7 +71,7 @@ class Image():
         self.pantalla = pantalla
         self.ventana =  ventana
 
-    #Funcion para colocar las imagenes en un lugar espesifico de la pantalla
+    #Función para colocar las imagenes en un lugar específico de la pantalla
     def place(self, center: bool = False, xy: tuple = (0, 0)):
         if center:
             self.rect.center = self.ventana.center
@@ -95,7 +95,7 @@ class Text():
         self.image = self.font.render(self.text, False, self.color, self.background)
         self.rect = self.image.get_rect()
 
-    #Funcion para colocar el texto en un lugar especifico de la pantalla
+    #Función para colocar el texto en un lugar específico de la pantalla
     def place(self, center: bool = False, xy: tuple = (0, 0)):
         if center:
             self.rect.center = self.ventana.center
@@ -123,16 +123,16 @@ class CajaText():
 
 
 
-    #Cuando se precione el cuandro
+    #Cuando se precione el cuadro
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
-            # Si se hace clic en el cuadro
+            # Si se hace click en el cuadro
             if self.rect.collidepoint(event.pos):
-                # cuando esta activo
+                # Cuando esta activo
                 self.active = not self.active
             else:
                 self.active = False
-            # cambia el color del cuandro caundo este inactivo.
+            # Cambia el color del cuadro cuando este inactivo.
             self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
         if event.type == pg.KEYDOWN:
             if self.active:
@@ -143,11 +143,11 @@ class CajaText():
                     self.text = self.text[:-1]
                 else:
                     self.text += event.unicode
-                # toma el texto.
+                # Toma el texto.
                 self.txt_surface = FONT.render(self.text, True, self.color)
 
     def update(self):
-        # dependiendo de lo largo del texto hace el cuadro mas largo
+        # Dependiendo de lo largo del texto hace el cuadro más largo
         width = max(200, self.txt_surface.get_width()+10)
         self.rect.w = width
 
@@ -162,6 +162,6 @@ class CajaText():
 
         # Pone el texto.
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
-        #  Pone el rectangulo.
+        #  Pone el rectángulo.
         pg.draw.rect(screen, self.color, self.rect, 2)
 

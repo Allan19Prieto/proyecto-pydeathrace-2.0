@@ -34,12 +34,12 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
     rojo = (254, 0, 0, 255)
     meta = (237, 238, 240, 255)
 
-    #Funcion para escribir en la pantalla los objetos
+    #Función para escribir en la pantalla los objetos
     def escribe_en_pantalla(texto, color, tamanho, posicion):
         fuente = pygame.font.Font(None, tamanho)
         pantalla.blit(fuente.render(texto,  3, color), posicion)
 
-    #Funcion para mapear la tecla que ha sido precionada
+    #Función para mapear la tecla que ha sido precionada
     def tecla(tecla, player):
         tecla_map = {'acelera': [K_UP, K_w], 'freno': [K_DOWN, K_s],\
                      'izquierda': [K_LEFT, K_a], 'derecha': [K_RIGHT, K_d]}
@@ -48,7 +48,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         return tecla_map[tecla][1]
 
     class Display():
-        #Las variables que se utilizaran durante el juego
+        #Las variables que se utilizarán durante el juego
         def __init__(self, player):
             self.tamano_letra = 25
             self.numero_vueltas = 0
@@ -72,7 +72,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.pos_ultima_volta = (5, 725)
                 self.pos_melhor_volta = (5, 745)
 
-        #Par amostrar la informacion que tendra el jugador
+        #Para mostrar la información que tendra el jugador
         def exibe_display(self):
             vida = 'Vida: ' + str(500)
             velocidade = 'Velocidade: ' + str(0 / 5)
@@ -94,7 +94,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.imgpista_colores = funciones.cargar_imagem('pista-' + str(pista) + '.jpg')
             self.num_voltas = 1
 
-            # largada
+            # Largada
             self.tempo_largada = 0
             self.largada = False
             self.tamano_letras = 100
@@ -148,32 +148,32 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.acelerador, self.freio = tecla('acelera', player), tecla('freno', player)
             self.esquerda, self.direita = tecla('izquierda', player), tecla('derecha', player)
 
-            # cor do carro
+            # color de carro
             self.cor = cor
             self.imgscar = funciones.cargar_imagem(f"car1.png",1)
             self.imgcar = self.imgscar
 
-            # velocidade/deslocamento/acelera
+            # velocidades/dislocamiento/aceleración
             self.velocidade_carro = 0
             self.velocidade_max = 200.
             self.rotacao = pista.rotacao
-            self.velocidade_rotacao = 90.  # graus por segundo
+            self.velocidade_rotacao = 90.
 
-            # posicao inicial dos carros na pista e antes de uma batida
+            # Posición inicial de los carros en la pista antes de la partida
             if player == 1:
                 self.posicao = pista.posicaop1
             else:
                 self.posicao = pista.posicaop2
             self.pos_antes_batida = self.posicao.copy()
 
-            # conta voltas
+            # Vueltas
             self.checks = 0
             self.voltas = 0
             self.melhor_volta = "-"
             self.ultima_volta = "-"
             self.cronometro = pygame.time.Clock()
 
-            # life
+            # Vida
             self.life = 100
             self.somexplosao = pygame.mixer.Sound('sounds/explode.wav')
             self.imgsexplosao = funciones.cargar_imagem('explosion.png', 1, [(x, 0, 50, 50) for x in range(0, 400, 50)])
@@ -184,7 +184,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             #Sonidos
             self.acelerasn = pygame.mixer.Sound('sounds/aceleracion_1.wav')
 
-            # retangulo do sprite
+            # Rectángulo del sprite
             self.rect = Rect(self.posicao.x - self.imgcar.get_width() / 2,
                              self.posicao.y - self.imgcar.get_height() / 2, \
                              self.imgcar.get_width(), self.imgcar.get_height())
@@ -307,7 +307,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.velocidade_carro+= 35
 
         def rotaciona_carro(self, pressed_key):
-            #Par ael movimiento del carro
+            #Para el movimiento del carro
             self.direcao_rotacao = 0.
 
             if self.velocidade_carro != 0:
@@ -349,7 +349,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                               self.imgcar.get_height()/2, self.imgcar.get_width(), self.imgcar.get_height())
 
         def completa_volta(self, pista):
-            #Verifica un avuelta
+            #Verifica un vuelta
             if pista.imgmapa_cores.get_at((int(self.posicao.x), int(self.posicao.y))) in [meta]:
 
                 self.ultima_volta_mil = self.cronometro.tick(fps)
@@ -479,14 +479,14 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         pygame.display.update()
 
 
-        #Parte logica
+        #Parte lógica
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (
                     event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
             ):
                 quit()
 
-        #region Datos para el cronometro
+        #Región datos para el cronómetro
         #Parte de dibujo
 
         pressed_key = pygame.key.get_pressed()

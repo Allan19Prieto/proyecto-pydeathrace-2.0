@@ -5,14 +5,14 @@ import os
 from pygame.locals import *
 
 #Fuentes
-#Crea un ruta a un imagen, que esté en assets/sprites
+#Crea una ruta a una imagen, que esté en assets/sprites
 def load_sprite(name, with_alpha=True):
     #arquivo = os.path.join('img', arquivo)
     path = f"C:/Users/Allan/Desktop/Proyecto_Race/img/{name}"
     #Carga la imagen usando load
     loaded_sprite = load(path)
 
-    #Convierte la imagena un formato que se adapte mejor a la pantalla
+    #Convierte la imagen en un formato que se adapte mejor a la pantalla
     if with_alpha:
         return loaded_sprite.convert_alpha()
     else:
