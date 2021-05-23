@@ -77,8 +77,8 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         def exibe_display(self):
             vida = 'Vida: ' + str(self.carro_player.life)
             velocidade = 'Velocidade: ' + str(self.carro_player.velocidade_carro / 5)
-            voltas = 'Vueltas: ' + str(0+1) + '/' + str(self.numero_vueltas)
-            puntos = 'Puntos: ' + str(0+1) +  '/' + str(self.carro_player.puntos)
+            voltas = 'Vueltas: ' + str(0+1)  + str(self.carro_player.vueltas)
+            puntos = 'Puntos: ' + str(0+1)  + str(self.carro_player.puntos)
 
 
             escribe_en_pantalla(self.name, darkred, self.tamano_letra, self.posicion_nombre)
@@ -104,20 +104,20 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 self.rotacao = 180.
             elif num_pista == 2:
                 self.posicaop1 = Vector(800, 630)
-                self.posicaop2 = Vector(7850, 670)
+                self.posicaop2 = Vector(7850, 630)
                 self.rotacao = 180.
             elif num_pista == 3:
                 self.posicaop1 = Vector(900, 50)
                 self.posicaop2 = Vector(885, 50)
                 self.rotacao = 180.
 
+        #Cuenta el tiempo d el apartida
         def conta_tempo_largada(self, tf, ti, numero):
-            """ o nome já diz tudo """
             if tf > self.tempo_largada >= ti:
                 escribe_en_pantalla(numero, darkred, self.tamano_letras, (500, 334))
 
-        def larga(self):
-            """ exibe na tela a mensagem de largada e permite a movimentação dos carros (self.largada) """
+        #Comienza a contar antes de iniciar el juego
+        def comienzo(self):
             if self.tempo_largada < fps * 10:
                 self.tempo_largada += 1
 
@@ -132,8 +132,8 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         def pistas_colores(self):
             pantalla.blit(self.imgpista_colores, (0, 0))
 
-        def carrega_pista(self):
-            """ carrega a imagem da pista escolhida pelo usuário que fica em cima da imagem do mapa de cores """
+        #Se carga la imagen de las pistas con los obtaculos
+        def pista_diseño(self):
             pantalla.blit(self.imgpista, (0, 0))
 
     class Carro(Sprite):
@@ -142,20 +142,20 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             Sprite.__init__(self, *grupos)
 
             # teclas
-            self.acelerador, self.freio = tecla('acelera', player), tecla('freno', player)
-            self.esquerda, self.direita = tecla('izquierda', player), tecla('derecha', player)
+            self.acelerar, self.freno = tecla('acelera', player), tecla('freno', player)
+            self.izquirda, self.derecha = tecla('izquierda', player), tecla('derecha', player)
 
-            # cor do carro
+            # Carro imagenes
             self.imgscar = funciones.cargar_imagem(f"car{cor}.png",1)
             self.imgcar = self.imgscar
 
-            # velocidade/deslocamento/acelera
+            # Variablels necesarias para el carro
             self.velocidade_carro = 0
-            self.velocidade_max = 200.
+            self.velocidade_max = 150.
             self.rotacao = pista.rotacao
             self.velocidade_rotacao = 90.  # graus por segundo
 
-            # posicao inicial dos carros na pista e antes de uma batida
+            # la posicion inicial del carro seleccionado
             if player == 1:
                 self.posicao = pista.posicaop1
             else:
@@ -164,16 +164,15 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
             # conta voltas
             self.checks = 0
-            self.voltas = 0
-            self.melhor_volta = "-"
-            self.ultima_volta = "-"
+            self.vueltas = 0
+
             self.cronometro = pygame.time.Clock()
 
             # life
             self.life = 100
             self.somexplosao = pygame.mixer.Sound('sounds/explode.wav')
-            self.imgsexplosao = funciones.cargar_imagem('explosion.png', 1, [(x, 0, 50, 50) for x in range(0, 400, 50)])
-            self.imgexplosao = self.imgsexplosao[0]
+            self.imgexplosion = funciones.cargar_imagem('explosion.png', 1, [(x, 0, 50, 50) for x in range(0, 400, 50)])
+            self.imgexplota = self.imgexplosion[0]
             self.explode = False
             self.conta_tempo_morte = fps * 5
             self.puntos = 0
@@ -190,15 +189,15 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.sombatida = pygame.mixer.Sound('sounds/warning.wav')
             self.sombatida.set_volume(0.2)
 
-        def muda_textura(self, pressed_key):
+        def Cambia_imagen(self, pressed_key):
             #Usamos la imagen del carro
             self.imgcar = self.imgscar
 
             if self.life <= 0:
-                self.imgcar = self.imgexplosao
+                self.imgcar = self.imgexplota
 
-        def colide(self):
-            """ detecta a colisão do carro com os extremos da tela e com os obstáculos da pista """
+        #Detecta las colociones del auto y las pistas
+        def colision(self):
             x, y = tuple(self.posicao)
 
             if x <= 10:
@@ -211,6 +210,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             elif y >= alto - 10:
                 y = alto - 10
 
+            #Identificamos los colores de la pantalla y podemos saber donde estan los ostaculos
             if pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y))) == amarillo:
                 self.sombatida.play()
                 y -= 2
@@ -225,26 +225,25 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 x += 2
 
             if pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y))) in [amarillo, rojo]:
-                self.perde_velocidade(50, -25)
+                self.perder_velocidad(50, -25)
                 self.perde_life(10)
 
             self.posicao = Vector(x, y)
 
         def acelera(self, pressed_key):
             #Para acelerar el carro
-            if [pressed_key[self.acelerador], pressed_key[self.freio]] == [0, 0] or self.explode:
+            if [pressed_key[self.acelerar], pressed_key[self.freno]] == [0, 0] or self.explode:
                 if self.velocidade_carro > 0:
                     self.velocidade_carro -= 5
                 elif self.velocidade_carro < 0:
-                    self.acelerasn.play()
                     self.velocidade_carro += 5
 
             if pista.largada and not self.explode:
-                if pressed_key[self.acelerador]:
+                if pressed_key[self.acelerar]:
                     if self.velocidade_carro < 1000:
                         self.velocidade_carro += 20
 
-                if pressed_key[self.freio]:
+                if pressed_key[self.freno]:
                     if 0 < self.velocidade_carro <= 1000:
                         self.velocidade_carro -= 20
                     elif -200 <= self.velocidade_carro <= 0:
@@ -261,26 +260,26 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 grupo.remove(self)
 
                 if fps * 5 >= self.conta_tempo_morte >= (fps * 5) - 5:
-                    self.imgexplosao = self.imgsexplosao[0]
+                    self.imgexplota = self.imgexplosion[0]
                     self.somexplosao.play()
 
                 elif (fps * 5) - 5 >= self.conta_tempo_morte >= (fps * 5) - 10:
-                    self.imgexplosao = self.imgsexplosao[1]
+                    self.imgexplota = self.imgexplosion[1]
 
                 elif (fps * 5) - 10 >= self.conta_tempo_morte >= (fps * 5) - 15:
-                    self.imgexplosao = self.imgsexplosao[2]
+                    self.imgexplota = self.imgexplosion[2]
 
                 elif (fps * 5) - 15 >= self.conta_tempo_morte >= (fps * 5) - 20:
-                    self.imgexplosao = self.imgsexplosao[3]
+                    self.imgexplota = self.imgexplosion[3]
 
                 elif (fps * 5) - 20 >= self.conta_tempo_morte >= (fps * 5) - 25:
-                    self.imgexplosao = self.imgsexplosao[4]
+                    self.imgexplota = self.imgexplosion[4]
 
                 elif (fps * 5) - 25 >= self.conta_tempo_morte >= (fps * 5) - 30:
-                    self.imgexplosao = self.imgsexplosao[5]
+                    self.imgexplota = self.imgexplosion[5]
 
                 elif (fps * 5) - 30 >= self.conta_tempo_morte >= (fps * 5) - 35:
-                    self.imgexplosao = self.imgsexplosao[6]
+                    self.imgexplota = self.imgexplosion[6]
                     self.velocidade_carro = 0
 
                 if self.life <= 0:
@@ -296,28 +295,29 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                     if self.conta_tempo_morte <= 0:
                         self.conta_tempo_morte = fps * 5
 
-        def perde_velocidade(self, limite, limite_re):
+        def perder_velocidad(self, limite, limite_re):
             #Regula la velocidad del jugador
             if self.velocidade_carro > limite:
                 self.velocidade_carro-= 50
             elif -600 < self.velocidade_carro < limite_re:
                 self.velocidade_carro+= 35
 
-        def rotaciona_carro(self, pressed_key):
+
+        def rotacion_carro(self, pressed_key):
             #Par ael movimiento del carro
             self.direcao_rotacao = 0.
 
             if self.velocidade_carro != 0:
                 if self.velocidade_carro < 0:
-                    if pressed_key[self.esquerda]:
-                        self.direcao_rotacao = -1
-                    elif pressed_key[self.direita]:
+                    if pressed_key[self.izquirda]:
                         self.direcao_rotacao = +1
+                    elif pressed_key[self.derecha]:
+                        self.direcao_rotacao = -1
                 else:
-                    if pressed_key[self.esquerda]:
-                        self.direcao_rotacao = +1
-                    elif pressed_key[self.direita]:
+                    if pressed_key[self.izquirda]:
                         self.direcao_rotacao = -1
+                    elif pressed_key[self.derecha]:
+                        self.direcao_rotacao = +1
 
         def rotaciona_imgcarro(self):
             """ rotaciona a imagem do carro de acordo com a ação realizadaa pelo usuário """
@@ -334,14 +334,14 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                self.rotacao = self.rotacao - 360
             elif self.rotacao < 0:
                self.rotacao = 360 + self.rotacao
-            heading_x = sin(self.rotacao*pi/180.0)
-            heading_y = cos(self.rotacao*pi/180.0)
+            heading_x = cos(self.rotacao*pi/180.0)
+            heading_y = sin(self.rotacao*pi/180.0)
             heading = Vector(heading_x, heading_y)
             heading *= self.direcao_movimento
             self.posicao += heading * self.velocidade_max * time_passed_seconds
 
+        #Guarda la posicion en la que se encuantra el carro al morir
         def atualiza_rect(self):
-            """ atualiza a representação do carro (retângulo) de acordo com a sua posição atual """
             self.rect = Rect(self.posicao.x - self.imgcar.get_width()/2, self.posicao.y - \
                               self.imgcar.get_height()/2, self.imgcar.get_width(), self.imgcar.get_height())
 
@@ -349,24 +349,14 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             #Verifica un avuelta
             if pista.imgmapa_cores.get_at((int(self.posicao.x), int(self.posicao.y))) in [meta]:
 
-                self.ultima_volta_mil = self.cronometro.tick(fps)
-                self.ultima_volta = self.ultima_volta_mil / 1000.0
-
-                if self.melhor_volta == "-":
-                    self.melhor_volta = self.ultima_volta
-
-                if self.ultima_volta < self.melhor_volta:
-                    self.melhor_volta = self.ultima_volta
-
-                self.voltas += 1
-                self.checks = 0
+                self.vueltas += 1
                 #Esta sera la de los puntos
                 self.puntos += 10
-                if self.voltas == pista.num_voltas:
+                if self.vueltas == pista.num_voltas:
                     return True
 
+        #Determina cuando el carro choca con algun obstaculo
         def testa_batida(self, outro, grupo):
-            """ verifica batidas entre os carros e produz o os efeitos de movimento de colisão """
             self.atualiza_rect()
             outro.atualiza_rect()
 
@@ -430,26 +420,19 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                     self.perde_life(500)
 
                 self.perde_life(5)
-
             else:
                 self.pos_antes_batida = self.posicao
-
             self.posicao = Vector(x, y)
 
         def acoes(self, grupo):
-            """ metoto responsável por atualizar todas as ações do carro """
-            self.colide()
-            self.muda_textura(pressed_key)
+            #Instanciamos los metodos
+            self.colision()
+            self.Cambia_imagen(pressed_key)
             self.acelera(pressed_key)
-            self.rotaciona_carro(pressed_key)
+            self.rotacion_carro(pressed_key)
             self.rotaciona_imgcarro()
-            #self.pisa_brita()
             self.movimenta(time_passed_seconds)
             self.morre(grupo)
-
-
-
-    #pista = Image("img", "Pista1.jpg", (ancho, alto), pantalla, window_rect)
     pygame.init()
 
     #pygame.mixer.music.load(musicas[num_musica])
@@ -475,7 +458,6 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
         pygame.display.update()
 
-
         #Parte logica
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (
@@ -490,11 +472,11 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
         #Ver las pistas
         pista.pistas_colores()
-        pista.carrega_pista()
+        pista.pista_diseño()
 
         carrop1.acoes(grupo1)
 
-        pista.larga()
+        pista.comienzo()
         #pista.place()
         #pantalla.blit(info, (5, 5))
         #segundos = str(int(pygame.time.get_ticks()/1000))
@@ -502,6 +484,5 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         #contador = fuente.render(segundos,0,(155,155,230))
         #pantalla.blit(contador, (300, 5))
         #endregion
-
 
         pygame.display.flip()

@@ -21,7 +21,6 @@ class Game:
         self.x = 950
         self.y = 150
 
-
         width = 1365
         height = 720
         self.screen = pygame.display.set_mode((width, height))
