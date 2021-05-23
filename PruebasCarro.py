@@ -32,7 +32,7 @@ class Game:
 
         self.car = Car(30, 5)
 
-        self.pista1 = Image("img", "Pista1.jpg", (width, height), self.screen, self.window_rect)
+        self.pista1 = Image("img", "Pista-1.jpg", (width, height), self.screen, self.window_rect)
         self.pista2 = Image("img", "Pista2.jpg", (width, height), self.screen, self.window_rect)
         self.pista3 = Image("img", "Pista3.jpg", (width+10, height+10), self.screen, self.window_rect)
         self.carro = Image("img", "car12.png", (67, 37), self.screen, self.window_rect)

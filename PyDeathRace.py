@@ -74,16 +74,16 @@ class pydeathrace:
         self.jugadores = "uno"
 
         #Variables para la pantalla
-        self.Carro1_seleccionado = 0
+        self.Carro1_seleccionado = 1
         self.Carro2_seleccionado = None
-        self.Pista_seleccionada = None
+        self.Pista_seleccionada = 1
         self.Jugadores_seleccionados = 1
 
         #Nombre de usuarios
         self.nombre_usuario = ""
         self.nombre_usuario2 = ""
         self.nombre_usuario_1 = ""
-        self.nombre_usuario_2 = ""
+        self.nombre_usuario_2 = None
 
         self.newUserName = ""
         self.userName = ""
@@ -311,14 +311,14 @@ class pydeathrace:
                         self.contador_carros = 0
                     else:
                         self.contador_carros += 1
-                    self.Carro1_seleccionado = self.contador_carros
+                    self.Carro1_seleccionado = self.contador_carros + 1
                 if self.btn_flecha_izquierda.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click.play()
                     if self.contador_carros  == 0:
                         self.contador_carros = 14
                     else:
                         self.contador_carros -= 1
-                    self.Carro1_seleccionado = self.contador_carros
+                    self.Carro1_seleccionado = self.contador_carros + 1
 
                 #Eventos para las pistas ··##################
                 if self.btn_flecha_derecha2.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
@@ -327,14 +327,14 @@ class pydeathrace:
                         self.contador_pistas = 0
                     else:
                         self.contador_pistas += 1
-                    self.Pista_seleccionada = self.contador_pistas
+                    self.Pista_seleccionada = self.contador_pistas + 1
                 if self.btn_flecha_izquierda2.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click.play()
                     if self.contador_pistas  == 0:
                         self.contador_pistas = 2
                     else:
                         self.contador_pistas -= 1
-                    self.Pista_seleccionada = self.contador_pistas
+                    self.Pista_seleccionada = self.contador_pistas + 1
 
                 # Eventos Para el segundo jugador ###############
                 if self.btn_flecha_derecha3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
@@ -438,17 +438,17 @@ class pydeathrace:
             self.btn_nombre1 = Image("button", "Nombre1.png", (230, 115), self.pantalla, self.window_rect)
             self.btn_nombre2 = Image("button", "Nombre2.png", (230, 115), self.pantalla, self.window_rect)
             self.input_box1.draw(self.pantalla, self.window_rect, True, (-400, 20))
-            self.input_box2.draw(self.pantalla, self.window_rect, True, (400, 20))
             self.btn_nombre.place(True, (-0, -290))
-            #self.titulo_nombre_text.place(True, (0, -150))
             self.btn_nombre1.place(True, (-400, -130))
-            self.btn_nombre2.place(True, (400, -130))
+            if self.jugadores == "dos":
+                self.input_box2.draw(self.pantalla, self.window_rect, True, (400, 20))
+                self.btn_nombre2.place(True, (400, -130))
+
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantalla puntaje
         elif self.menu == "puntaje":
             self.f_inicio.place()
-            #self.indica_tex.place(True, (0, -200))
             self.btn_puntaje.place(True, (0, -290))
             self.btn_atras.place(True, (-590, -320))
 
@@ -485,7 +485,7 @@ class pydeathrace:
                 self.imagenes_carros2[self.contador_carros2].place(xy=(245, 595))
 
                 self.usuario_nombre2 = Text(self.pantalla, self.window_rect, "game_font", 30, crimson,
-                                           " Usuario: " + self.nombre_usuario_2)
+                                           " Usuario: " + str(self.nombre_usuario_2))
                 self.usuario_nombre2.place(xy=(570, 595))
 
             self.btn_atras.place(True, (-590, -320))
@@ -505,7 +505,7 @@ class pydeathrace:
 
             if self.tiempo_espera == 170:
                 #Pasamos a jugar en la pista
-                Carrera.main(self.pantalla)
+                Carrera.main(self.pantalla, self.Pista_seleccionada, self.Jugadores_seleccionados, self.Carro1_seleccionado, self.Carro2_seleccionado, self.nombre_usuario_1, self.nombre_usuario_2)
                 self.menu = "menu"
 
         # Colocamos en mouse en la pantalla

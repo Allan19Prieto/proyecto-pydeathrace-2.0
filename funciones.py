@@ -1,9 +1,7 @@
 import csv
-
-from pygame.image import load
-
-import os
 import pygame
+from pygame.image import load
+import os
 from pygame.locals import *
 
 #Fuentes
@@ -32,7 +30,7 @@ def muestra_texto(pantalla, fuente, texto, color, dimensiones, x, y, consolas, p
 
 def cargar_imagem(arquivo, transparencia=None, imagens=None):
 
-    arquivo = os.path.join('img', arquivo)
+    arquivo = os.path.join('C:/Users/Allan/Desktop/Proyecto_Race/img/', arquivo)
     image = pygame.image.load(arquivo)
 
     if imagens is None:
