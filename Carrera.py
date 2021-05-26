@@ -11,20 +11,14 @@ import random
 from pygame.locals import *
 from pygame.sprite import Sprite
 
-def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = None, jugador2 = None):
+def main(pantalla, num_pista, num_jugadores, Carro1, Carro2 = None, jugador1 = None, jugador2 = None):
 
-    #musicas = {1: "sounds/final.ogg", 2: "sounds/lose.wav", 3: "sounds/ready.wav"}
-    #num_musica = random.randint(1, 3)
+    musicas = {1: "sounds/Wild Rift - LOL.mp3", 2: "sounds/Main Theme - ARK.mp3", 3: "sounds/Piercing Light  - LOL.mp3"}
+    num_musica = random.randint(1, 3)
     pygame.mixer.pre_init(44100, -16, 2, 1024 * 4)
-
     ancho = 1361
     alto = 716
-    #pantalla = pygame.display.set_mode((ancho, alto))
     window_rect = pantalla.get_rect()
-    #region Datos para el cronometro
-    #fuente = pygame.font.SysFont("Arial", 20, True, False)
-    #info = fuente.render("Este va a ser el cronometro", 0, (255,255,255))
-    #endragion
     fps = 30
 
     #Colores
@@ -56,31 +50,29 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
             if player == 1:
                 self.name = jugador1
-                self.carro_player = carrop1
-                self.posicion_nombre = (5, 5)
-                self.posicion_velocidad = (5, 65)
-                self.posicion_vueltas = (5, 85)
-                self.posicion_vidas = (5, 45)
-                self.posicion_puntos = (5, 105)
-
+                self.carro_player = carro1
+                self.posicion_nombre = (10, 5)
+                self.posicion_velocidad = (10, 65)
+                self.posicion_vueltas = (10, 85)
+                self.posicion_vidas = (10, 45)
+                self.posicion_puntos = (10, 105)
             else:
                 self.name = jugador2
-                #self.carro_player = carrop2
-                self.posicion_nombre = (5, 625)
-                self.posicion_velocidad = (5, 685)
-                self.posicion_vueltas = (5, 705)
-                self.posicion_vidas = (5, 665)
-                self.posicion_puntos = (5, 725)
-
+                self.carro_player = carro2
+                self.posicion_nombre = (1200, 5)
+                self.posicion_velocidad = (1200, 65)
+                self.posicion_vueltas = (1200, 85)
+                self.posicion_vidas = (1200, 45)
+                self.posicion_puntos = (1200, 105)
 
         #Par amostrar la informacion que tendra el jugador
-        def exibe_display(self):
+        def muestra_display(self):
             vida = 'Vida: ' + str(self.carro_player.life)
-            velocidade = 'Velocidade: ' + str(self.carro_player.velocidade_carro // 5)
+            velocidade = 'Velocidade: ' + str(self.carro_player.velocidad_carro // 5)
             voltas = 'Vueltas: ' + str(self.carro_player.vueltas)
             puntos = 'Puntos: ' + str(self.carro_player.puntos)
 
-
+            #Esto se mostrara en la pantalla
             escribe_en_pantalla(self.name, darkred, self.tamano_letra, self.posicion_nombre)
             escribe_en_pantalla(vida, darkred, self.tamano_letra, self.posicion_vidas)
             escribe_en_pantalla(velocidade, darkred, self.tamano_letra, self.posicion_velocidad)
@@ -94,26 +86,26 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.snInicio.set_volume(0.2)
             self.imgpista = funciones.cargar_imagem('pista' + str(pista) + '.jpg')
             self.imgpista_colores = funciones.cargar_imagem('pista-' + str(pista) + '.jpg')
-            self.num_voltas = 1
+            self.num_vueltas = 1
 
-            # largada
+            # Con respecto a la posicion qeu tengra el carro al iniciar la pista, y el angulo de rotacion
             self.tiempopo_enpantalla = 0
             self.largo = False
             self.tamano_letras = 200
             if num_pista == 1:
-                self.posicaop1 = Vector(850, 200)
-                self.posicaop2 = Vector(830, 200)
-                self.rotacao = 180.
+                self.posicion1 = Vector(850, 200)
+                self.posicion2 = Vector(700, 210)
+                self.rotacion_pantalla = 180.
             elif num_pista == 2:
-                self.posicaop1 = Vector(800, 630)
-                self.posicaop2 = Vector(7850, 630)
-                self.rotacao = 180.
+                self.posicion1 = Vector(500, 630)
+                self.posicion2 = Vector(350, 640)
+                self.rotacion_pantalla = 180.
             elif num_pista == 3:
-                self.posicaop1 = Vector(900, 50)
-                self.posicaop2 = Vector(885, 50)
-                self.rotacao = 180.
+                self.posicion1 = Vector(700, 50)
+                self.posicion2 = Vector(550, 60)
+                self.rotacion_pantalla = 180.
 
-        #Cuenta el tiempo d el apartida
+        #Cuenta el tiempo de la apartida
         def tiempo_espera(self, tf, ti, numero):
             if tf > self.tiempopo_enpantalla >= ti:
                 escribe_en_pantalla(numero, darkred, self.tamano_letras, (600, 250))
@@ -139,52 +131,52 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         def pista_diseño(self):
             pantalla.blit(self.imgpista, (0, 0))
 
-    #Nuentra clasa carro
+    #Nuestra clasa carro
     class Carro(Sprite):
-        def __init__(self, player, cor, *grupos):
+        def __init__(self, player, num, *grupos):
             Sprite.__init__(self, *grupos)
 
-            # teclas
+            # Teclas que se usaran para que el carro se mueva
             self.acelerar, self.freno = tecla('acelera', player), tecla('freno', player)
             self.izquirda, self.derecha = tecla('izquierda', player), tecla('derecha', player)
 
-            # Carro imagenes
-            self.imgscar = funciones.cargar_imagem(f"car{cor}.png",1)
+            # La imagenes del carro que se selecciono
+            self.imgscar = funciones.cargar_imagem(f"car{num}.png", 1)
             self.imgcar = self.imgscar
 
             # Variablels necesarias para el carro
-            self.velocidade_carro = 0
-            self.velocidade_max = 150.
-            self.rotacao = pista.rotacao
-            self.velocidade_rotacao = 90.  # graus por segundo
+            self.velocidad_carro = 0
+            self.velocidad_max = 150.
+            self.rotacion = pista.rotacion_pantalla
+            self.velocidad_rotacao = 90.  # graus por segundo
 
             # la posicion inicial del carro seleccionado
             if player == 1:
-                self.posicao = pista.posicaop1
+                self.posicion = pista.posicion1
             else:
-                self.posicao = pista.posicaop2
-            self.pos_antes_batida = self.posicao.copy()
+                self.posicion = pista.posicion2
+            self.pos_antes_batida = self.posicion.copy()
 
-            # conta voltas
+            # Para saber el numero de vueltas que llevamos
             self.vueltas = 0
 
             self.cronometro = pygame.time.Clock()
 
-            # life
+            # Vida
             self.life = 200
-            self.somexplosao = pygame.mixer.Sound('sounds/explode.wav')
+            self.sonido_explosion = pygame.mixer.Sound('sounds/explode.wav')
             self.imgexplosion = funciones.cargar_imagem('explosion.png', 1, [(x, 0, 50, 50) for x in range(0, 400, 50)])
             self.imgexplota = self.imgexplosion[0]
-            self.explode = False
+            self.explocion = False
             self.conta_tempo_morte = fps * 5
             self.puntos = 0
 
             #Sonidos
             self.acelerasn = pygame.mixer.Sound('sounds/aceleracion_1.wav')
 
-            # retangulo do sprite
-            self.rect = Rect(self.posicao.x - self.imgcar.get_width() / 2,
-                             self.posicao.y - self.imgcar.get_height() / 2, \
+            # retangulo del  carro seleccionado
+            self.rect = Rect(self.posicion.x - self.imgcar.get_width() / 2,
+                             self.posicion.y - self.imgcar.get_height() / 2, \
                              self.imgcar.get_width(), self.imgcar.get_height())
 
 
@@ -201,7 +193,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
         #Detecta las colociones del auto y las pistas
         def colision(self):
-            x, y = tuple(self.posicao)
+            x, y = tuple(self.posicion)
 
             if x <= 10:
                 x = 10
@@ -214,39 +206,35 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 y = alto - 10
 
             #Identificamos los colores de la pantalla y podemos saber donde estan los ostaculos
-            if pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y))) == rojo:
+            if pista.imgpista_colores.get_at((int(self.posicion.x), int(self.posicion.y))) == rojo:
                 self.sombatida.play()
                 x += 2
-            elif pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y))) == amarillo:
-                self.puntos -= 5
+            elif pista.imgpista_colores.get_at((int(self.posicion.x), int(self.posicion.y))) == amarillo:
                 self.perde_life(5)
-            elif pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y)))  in [meta]:
-                self.puntos += 10
-                self.sopasameta.play()
-            if pista.imgpista_colores.get_at((int(self.posicao.x), int(self.posicao.y))) in [rojo, meta]:
+            if pista.imgpista_colores.get_at((int(self.posicion.x), int(self.posicion.y))) in [rojo, meta]:
                 self.perder_velocidad(50, -25)
                 self.perde_life(10)
 
-            self.posicao = Vector(x, y)
+            self.posicion = Vector(x, y)
 
         def acelera(self, pressed_key):
             #Para acelerar el carro
-            if [pressed_key[self.acelerar], pressed_key[self.freno]] == [0, 0] or self.explode:
-                if self.velocidade_carro > 0:
-                    self.velocidade_carro -= 5
-                elif self.velocidade_carro < 0:
-                    self.velocidade_carro += 5
+            if [pressed_key[self.acelerar], pressed_key[self.freno]] == [0, 0] or self.explocion:
+                if self.velocidad_carro > 0:
+                    self.velocidad_carro -= 5
+                elif self.velocidad_carro < 0:
+                    self.velocidad_carro += 5
 
-            if pista.largo and not self.explode:
+            if pista.largo and not self.explocion:
                 if pressed_key[self.acelerar]:
-                    if self.velocidade_carro < 1000:
-                        self.velocidade_carro += 20
+                    if self.velocidad_carro < 1000:
+                        self.velocidad_carro += 20
 
                 if pressed_key[self.freno]:
-                    if 0 < self.velocidade_carro <= 1000:
-                        self.velocidade_carro -= 20
-                    elif -200 <= self.velocidade_carro <= 0:
-                        self.velocidade_carro -= 10
+                    if 0 < self.velocidad_carro <= 1000:
+                        self.velocidad_carro -= 20
+                    elif -200 <= self.velocidad_carro <= 0:
+                        self.velocidad_carro -= 10
 
         def perde_life(self, dano):
             #El jugador pierde vidas cuando resive algun naño
@@ -260,7 +248,7 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
                 if fps * 5 >= self.conta_tempo_morte >= (fps * 5) - 5:
                     self.imgexplota = self.imgexplosion[0]
-                    self.somexplosao.play()
+                    self.sonido_explosion.play()
 
                 elif (fps * 5) - 5 >= self.conta_tempo_morte >= (fps * 5) - 10:
                     self.imgexplota = self.imgexplosion[1]
@@ -279,10 +267,10 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
 
                 elif (fps * 5) - 30 >= self.conta_tempo_morte >= (fps * 5) - 35:
                     self.imgexplota = self.imgexplosion[6]
-                    self.velocidade_carro = 0
+                    self.velocidad_carro = 0
 
                 if self.life <= 0:
-                    self.explode = True
+                    self.explocion = True
 
                 if self.conta_tempo_morte > 0:
                     self.conta_tempo_morte -= 1
@@ -290,24 +278,24 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                 if self.conta_tempo_morte <= fps * 2:
                     self.add(grupo)
                     self.life = 200
-                    self.explode = False
+                    self.explocion = False
                     if self.conta_tempo_morte <= 0:
                         self.conta_tempo_morte = fps * 5
 
         def perder_velocidad(self, limite, limite_re):
             #Regula la velocidad del jugador
-            if self.velocidade_carro > limite:
-                self.velocidade_carro-= 50
-            elif -600 < self.velocidade_carro < limite_re:
-                self.velocidade_carro+= 35
+            if self.velocidad_carro > limite:
+                self.velocidad_carro-= 50
+            elif -600 < self.velocidad_carro < limite_re:
+                self.velocidad_carro+= 35
 
 
         def rotacion_carro(self, pressed_key):
             #Par ael movimiento del carro
             self.direcao_rotacao = 0.
 
-            if self.velocidade_carro != 0:
-                if self.velocidade_carro < 0:
+            if self.velocidad_carro != 0:
+                if self.velocidad_carro < 0:
                     if pressed_key[self.izquirda]:
                         self.direcao_rotacao = +1
                     elif pressed_key[self.derecha]:
@@ -318,110 +306,111 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
                     elif pressed_key[self.derecha]:
                         self.direcao_rotacao = +1
 
+        # Guarda la posicion en la que se encuantra el carro al morir
+        def atualiza_rect(self):
+             self.rect = Rect(self.posicion.x - self.imgcar.get_width() / 2, self.posicion.y - \
+                                self.imgcar.get_height() / 2, self.imgcar.get_width(), self.imgcar.get_height())
+
+        def completa_volta(self, pista):
+             # Verifica un avuelta
+            if pista.imgpista_colores.get_at((int(self.posicion.x), int(self.posicion.y))) == meta:
+
+                self.vueltas += 1
+                # Esta sera la de los puntos
+                self.puntos += 10
+                self.sopasameta.play()
+                if self.vueltas == pista.num_vueltas:
+                    return True
+
         def rotaciona_imgcarro(self):
             """ rotaciona a imagem do carro de acordo com a ação realizadaa pelo usuário """
-            self.imgcar = pygame.transform.rotate(self.imgcar, self.rotacao)
+            self.imgcar = pygame.transform.rotate(self.imgcar, self.rotacion)
             self.w, self.h = self.imgcar.get_size()
-            desenha_carro = Vector(self.posicao.x - self.w/2, self.posicao.y - self.h/2)
+            desenha_carro = Vector(self.posicion.x - self.w/2, self.posicion.y - self.h/2)
             pantalla.blit(self.imgcar, desenha_carro)
 
         def movimenta(self, time_passed_seconds):
             #Movimiento normal de carro
-            self.direcao_movimento = +(self.velocidade_carro/1000.)
-            self.rotacao += self.direcao_rotacao * self.velocidade_rotacao * time_passed_seconds
-            if self.rotacao >= 360:
-               self.rotacao = self.rotacao - 360
-            elif self.rotacao < 0:
-               self.rotacao = 360 + self.rotacao
-            heading_x = cos(self.rotacao*pi/180.0)
-            heading_y = sin(self.rotacao*pi/180.0)
+            self.direcao_movimento = +(self.velocidad_carro/1000.)
+            self.rotacion += self.direcao_rotacao * self.velocidad_rotacao * time_passed_seconds
+            if self.rotacion >= 360:
+               self.rotacion = self.rotacion - 360
+            elif self.rotacion < 0:
+               self.rotacion = 360 + self.rotacion
+            heading_x = cos(self.rotacion*pi/180.0)
+            heading_y = sin(self.rotacion*pi/180.0)
             heading = Vector(heading_x, heading_y)
             heading *= self.direcao_movimento
-            self.posicao += heading * self.velocidade_max * time_passed_seconds
-
-        #Guarda la posicion en la que se encuantra el carro al morir
-        def atualiza_rect(self):
-            self.rect = Rect(self.posicao.x - self.imgcar.get_width()/2, self.posicao.y - \
-                              self.imgcar.get_height()/2, self.imgcar.get_width(), self.imgcar.get_height())
-
-        def completa_volta(self, pista):
-            #Verifica un avuelta
-            if pista.imgmapa_cores.get_at((int(self.posicao.x), int(self.posicao.y))) == meta:
-
-                self.vueltas += 1
-                #Esta sera la de los puntos
-                self.puntos += 10
-                if self.vueltas == pista.num_voltas:
-                    return True
+            self.posicion += heading * self.velocidad_max * time_passed_seconds
 
         #Determina cuando el carro choca con algun obstaculo
         def testa_batida(self, outro, grupo):
             self.atualiza_rect()
             outro.atualiza_rect()
 
-            x, y = tuple(self.posicao)
+            x, y = tuple(self.posicion)
             x1, y1 = tuple(self.pos_antes_batida)
             if outro in pygame.sprite.spritecollide(self, grupo, False):
                 self.sombatida.play()
                 x, y = x1, y1
-                if (45 <= self.rotacao <= 135 and 45 <= outro.rotacao <= 135) or \
-                        (225 < self.rotacao < 315 and 225 < outro.rotacao < 315) or \
-                        (135 < self.rotacao <= 225 and 135 < outro.rotacao <= 225) or \
-                        ((315 < self.rotacao < 360 or 0 < self.rotacao < 45) and \
+                if (45 <= self.rotacion <= 135 and 45 <= outro.rotacao <= 135) or \
+                        (225 < self.rotacion < 315 and 225 < outro.rotacao < 315) or \
+                        (135 < self.rotacion <= 225 and 135 < outro.rotacao <= 225) or \
+                        ((315 < self.rotacion < 360 or 0 < self.rotacion < 45) and \
                          (315 < outro.rotacao < 360 or 0 < outro.rotacao < 45)):
 
-                    outro.velocidade_carro += self.velocidade_carro / 3
+                    outro.velocidade_carro += self.velocidad_carro / 3
                     outro.velocidade_carro -= outro.velocidade_carro % 10
-                    self.velocidade_carro -= self.velocidade_carro / 2
-                    self.velocidade_carro -= self.velocidade_carro % 10
+                    self.velocidad_carro -= self.velocidad_carro / 2
+                    self.velocidad_carro -= self.velocidad_carro % 10
 
-                elif (225 < self.rotacao < 315 and 45 <= outro.rotacao <= 135) or \
-                        (45 <= self.rotacao <= 135 and 225 < outro.rotacao < 315) or \
-                        (135 < self.rotacao <= 225 and (315 < outro.rotacao < 360 or \
-                                                        0 < outro.rotacao < 45)) or ((315 < self.rotacao < 360 \
-                                                                                      or 0 < self.rotacao < 45) and 135 < outro.rotacao <= 225):
+                elif (225 < self.rotacion < 315 and 45 <= outro.rotacao <= 135) or \
+                        (45 <= self.rotacion <= 135 and 225 < outro.rotacao < 315) or \
+                        (135 < self.rotacion <= 225 and (315 < outro.rotacao < 360 or \
+                                                        0 < outro.rotacao < 45)) or ((315 < self.rotacion < 360 \
+                                                                                      or 0 < self.rotacion < 45) and 135 < outro.rotacao <= 225):
 
-                    outro.velocidade_carro -= self.velocidade_carro / 3
+                    outro.velocidade_carro -= self.velocidad_carro / 3
                     outro.velocidade_carro -= outro.velocidade_carro % 10
-                    self.velocidade_carro -= self.velocidade_carro / 2
-                    self.velocidade_carro -= self.velocidade_carro % 10
+                    self.velocidad_carro -= self.velocidad_carro / 2
+                    self.velocidad_carro -= self.velocidad_carro % 10
 
-                elif ((self.velocidade_carro > 0 and 45 < self.rotacao < 135) or \
-                      (self.velocidade_carro < 0 and 225 < self.rotacao < 315)) and \
+                elif ((self.velocidad_carro > 0 and 45 < self.rotacion < 135) or \
+                      (self.velocidad_carro < 0 and 225 < self.rotacion < 315)) and \
                         (135 < outro.rotacao <= 225 or (315 < outro.rotacao < 360 or 0 < outro.rotacao < 45)):
 
-                    self.velocidade = self.velocidade_carro / 4
+                    self.velocidad = self.velocidad_carro / 4
                     outro.posicao.x += 2
 
-                elif ((self.velocidade_carro < 0 and 45 < self.rotacao < 135) or \
-                      (self.velocidade_carro > 0 and 225 < self.rotacao < 315)) and \
+                elif ((self.velocidad_carro < 0 and 45 < self.rotacion < 135) or \
+                      (self.velocidad_carro > 0 and 225 < self.rotacion < 315)) and \
                         (135 < outro.rotacao <= 225 or (315 < outro.rotacao < 360 or 0 < outro.rotacao < 45)):
 
-                    self.velocidade = self.velocidade_carro / 4
+                    self.velocidad = self.velocidad_carro / 4
                     outro.posicao.x -= 2
 
-                elif ((135 < self.rotacao < 225 and self.velocidade_carro > 0) or \
-                      ((315 < self.rotacao < 360 or 0 < self.rotacao < 45) and \
-                       self.velocidade_carro < 0)) and (45 <= outro.rotacao <= 135 or 225 < outro.rotacao < 315):
+                elif ((135 < self.rotacion < 225 and self.velocidad_carro > 0) or \
+                      ((315 < self.rotacion < 360 or 0 < self.rotacion < 45) and \
+                       self.velocidad_carro < 0)) and (45 <= outro.rotacao <= 135 or 225 < outro.rotacao < 315):
 
-                    self.velocidade = self.velocidade_carro / 4
+                    self.velocidad = self.velocidad_carro / 4
                     outro.posicao.y -= 2
 
-                elif ((315 < self.rotacao < 360 or 0 < self.rotacao < 45) and \
-                      self.velocidade_carro > 0 or (135 < self.rotacao < 225 and \
-                                                    self.velocidade_carro < 0)) and (
+                elif ((315 < self.rotacion < 360 or 0 < self.rotacion < 45) and \
+                      self.velocidad_carro > 0 or (135 < self.rotacion < 225 and \
+                                                    self.velocidad_carro < 0)) and (
                         45 <= outro.rotacao <= 135 or 225 < outro.rotacao < 315):
 
-                    self.velocidade = self.velocidade_carro / 4
+                    self.velocidad = self.velocidad_carro / 4
                     outro.posicao.y += 2
 
-                elif self.rect.collidepoint(outro.posicao):
-                    self.perde_life(500)
+                elif self.rect.collidepoint(outro.posicion):
+                    self.perde_life(200)
 
-                self.perde_life(5)
+                self.perde_life(2)
             else:
-                self.pos_antes_batida = self.posicao
-            self.posicao = Vector(x, y)
+                self.pos_antes_batida = self.posicion
+            self.posicion = Vector(x, y)
 
         #LLamamos a todas las funciones que han sigo creadas, y se introsuce la variable para saber a cual grupo pertenece
         def Acciones(self, grupo):
@@ -433,16 +422,19 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             self.movimenta(time_passed_seconds)
             self.morre(grupo)
 
-
     pygame.init()
 
-    #pygame.mixer.music.load(musicas[num_musica])
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.load(musicas[num_musica])
+    pygame.mixer.music.play(-2)
 
     pista = Pista(num_pista)
-    carrop1 = Carro(1, carro1)
-    displayp1 = Display(1)
-    grupo1 = pygame.sprite.GroupSingle(carrop1)
+    carro1 = Carro(1, Carro1)
+    pantalla1 = Display(1)
+    pantalla_jugador1 = pygame.sprite.GroupSingle(carro1)
+    if num_jugadores > 1:
+        carro2 = Carro(2, Carro2)
+        pantalla2 = Display(2)
+        pantalla_jugador2 = pygame.sprite.GroupSingle(carro2)
 
     clock = pygame.time.Clock()
 
@@ -453,9 +445,9 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         time_passed = clock.tick(fps)
         time_passed_seconds = time_passed / 1000.0
 
-        displayp1.exibe_display()
+        pantalla1.muestra_display()
         if num_jugadores > 1:
-            num_jugadores.exibe_display()
+            pantalla2.muestra_display()
 
         pygame.display.update()
 
@@ -466,8 +458,18 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
             ):
                 quit()
 
-        #region Datos para el cronometro
-        #Parte de dibujo
+        #Par acambiar de pista cada vez qeu se cumple con los 200 puntos
+        carro1.completa_volta(pista)
+        if num_jugadores == 1:
+            if num_pista == 1 and carro1.puntos > 200:
+                main(pantalla, 2, num_jugadores, Carro1, None, jugador1, jugador2)
+            elif num_pista == 2 and carro1.puntos > 200:
+                main(pantalla, 3, num_jugadores, Carro1, None, jugador1, jugador2)
+        elif num_jugadores == 2:
+            if num_pista == 1 and carro1.puntos > 200 and carro2.puntos > 200:
+                main(pantalla, 2, num_jugadores, Carro1, None, jugador1, jugador2)
+            elif num_pista == 2 and carro1.puntos > 200 and carro2.puntos > 200:
+                main(pantalla, 3, num_jugadores, Carro1, None, jugador1, jugador2)
 
         pressed_key = pygame.key.get_pressed()
 
@@ -475,15 +477,15 @@ def main(pantalla, num_pista, num_jugadores, carro1, carro2 = None, jugador1 = N
         pista.pistas_colores()
         pista.pista_diseño()
 
-        carrop1.Acciones(grupo1)
+        carro1.Acciones(pantalla_jugador1)
+
+        #aqui mostramos los datos del sugundo jugador
+        if num_jugadores > 1:
+            carro2.Acciones(pantalla_jugador2)
+
+            # si los carros chocan entonces se activara esta funcion
+            carro1.testa_batida(carro2, pantalla_jugador1)
+            carro2.testa_batida(carro1, pantalla_jugador2)
 
         pista.comienzo()
-        #pista.place()
-        #pantalla.blit(info, (5, 5))
-        #segundos = str(int(pygame.time.get_ticks()/1000))
-        #minnutos = 0
-        #contador = fuente.render(segundos,0,(155,155,230))
-        #pantalla.blit(contador, (300, 5))
-        #endregion
-
         pygame.display.flip()

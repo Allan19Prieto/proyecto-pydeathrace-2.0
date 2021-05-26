@@ -344,14 +344,14 @@ class pydeathrace:
                         self.contador_carros2 = 0
                     else:
                         self.contador_carros2 += 1
-                    self.Carro2_seleccionado = self.contador_carros2
+                    self.Carro2_seleccionado = self.contador_carros2 + 1
                 if self.btn_flecha_izquierda3.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
                     self.s_click.play()
                     if self.contador_carros2 == 0:
                         self.contador_carros2 = 14
                     else:
                         self.contador_carros2 -= 1
-                    self.Carro2_seleccionado = self.contador_carros2
+                    self.Carro2_seleccionado = self.contador_carros2 + 1
 
                 #Botón para ingresar un jugador más a la partida
                 if self.btn_multigugador.rect.collidepoint(self.mouse1.coordenadas_cursor()) and self.menu == "seleccionar":
