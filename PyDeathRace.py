@@ -103,6 +103,7 @@ class pydeathrace:
         self.btn_puntaje = Image("button", "Puntaje.png", (230, 115), self.pantalla, self.window_rect)
         self.btn_salir = Image("button", "Salir.png", (180, 115), self.pantalla, self.window_rect)
         self.btn_terminar = Image("button", "Terminar.png", (180, 115), self.pantalla, self.window_rect)
+        self.btn_menu_indicaciones = Image("img", "Indicacion1.png", (580, 515), self.pantalla, self.window_rect)
 
 
         self.btn_iformacion = Image("img", "Informacion.png", (180, 115), self.pantalla, self.window_rect)
@@ -429,7 +430,7 @@ class pydeathrace:
         elif self.menu == "indica":
             self.f_inicio.place()
             self.btn_indicaciones.place(True, (0, -290))
-            #self.entry.place(x=50, y=50)
+            self.btn_menu_indicaciones.place(True, (25, 0))
             self.btn_atras.place(True, (-590, -320))
 
         #Vista de la pantalla nombre
